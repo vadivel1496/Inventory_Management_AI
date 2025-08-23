@@ -1,0 +1,146 @@
+<div class="user-form-container">
+  <!-- Background Shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Form Header -->
+    <div class="form-header">
+      <div class="header-card">
+        <div class="header-content">
+          <div class="header-left">
+            <div class="header-icon">
+              <i class="bi bi-person-plus"></i>
+            </div>
+            <div>
+              <h1 class="header-title">{{ isEditMode ? 'Edit User' : 'Add New User' }}</h1>
+              <p class="header-subtitle">{{ isEditMode ? 'Update user information' : 'Create a new user account' }}</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="btn btn-outline-secondary" routerLink="/users">
+              <i class="bi bi-arrow-left me-2"></i>Back to Users
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="card-body">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="bi bi-card-heading me-2"></i>User Information
+            </h3>
+            
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-person me-2"></i>Full Name *
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    formControlName="name" 
+                    placeholder="Enter full name" 
+                    required>
+                  <div class="invalid-feedback" *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched">
+                    <span *ngIf="userForm.get('name')?.hasError('required')">Name is required</span>
+                    <span *ngIf="userForm.get('name')?.hasError('minlength')">Name must be at least 2 characters</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-envelope me-2"></i>Email *
+                  </label>
+                  <input 
+                    type="email" 
+                    class="form-control" 
+                    formControlName="email" 
+                    placeholder="Enter email address" 
+                    required>
+                  <div class="invalid-feedback" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+                    <span *ngIf="userForm.get('email')?.hasError('required')">Email is required</span>
+                    <span *ngIf="userForm.get('email')?.hasError('email')">Please enter a valid email address</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-lock me-2"></i>Password {{ !isEditMode ? '*' : '' }}
+                  </label>
+                  <input 
+                    type="password" 
+                    class="form-control" 
+                    formControlName="password" 
+                    [placeholder]="isEditMode ? 'Leave blank to keep current password' : 'Enter password'"
+                    [required]="!isEditMode">
+                  <div class="invalid-feedback" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+                    <span *ngIf="userForm.get('password')?.hasError('required') && !isEditMode">Password is required</span>
+                    <span *ngIf="userForm.get('password')?.hasError('minlength')">Password must be at least 6 characters</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-person-badge me-2"></i>Role *
+                  </label>
+                  <select class="form-select" formControlName="role" required>
+                    <option value="">Select Role</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                  <div class="invalid-feedback" *ngIf="userForm.get('role')?.invalid && userForm.get('role')?.touched">
+                    <span *ngIf="userForm.get('role')?.hasError('required')">Role is required</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-circle-fill me-2"></i>Status *
+                  </label>
+                  <select class="form-select" formControlName="status" required>
+                    <option value="">Select Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                  <div class="invalid-feedback" *ngIf="userForm.get('status')?.invalid && userForm.get('status')?.touched">
+                    <span *ngIf="userForm.get('status')?.hasError('required')">Status is required</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions d-flex justify-content-end gap-3">
+            <button class="btn btn-outline-secondary" type="button" (click)="cancel()" [disabled]="submitting">
+              <i class="bi bi-x-circle me-2"></i>Cancel
+            </button>
+            <button 
+              class="btn btn-primary" 
+              type="submit" 
+              [disabled]="userForm.invalid || submitting">
+              <span *ngIf="!submitting">
+                <i class="bi bi-check-circle me-2"></i>{{ isEditMode ? 'Update User' : 'Create User' }}
+              </span>
+              <span *ngIf="submitting">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Loading...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 

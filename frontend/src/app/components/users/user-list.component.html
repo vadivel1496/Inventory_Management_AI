@@ -1,0 +1,175 @@
+<div class="users-container">
+  <!-- Background Shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Users Header -->
+    <div class="users-header">
+      <div class="header-card">
+        <div class="header-content">
+          <div class="header-left">
+            <div class="header-icon">
+              <i class="bi bi-people"></i>
+            </div>
+            <div>
+              <h1 class="header-title">Users</h1>
+              <p class="header-subtitle">Manage system users and their permissions</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="btn btn-primary" routerLink="/users/new">
+              <i class="bi bi-plus me-2"></i>Add User
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Card -->
+    <div class="filters-card">
+      <div class="card-body">
+        <div class="row g-3 align-items-end">
+          <!-- Search Field -->
+          <div class="col-md-4">
+            <label class="form-label">
+              <i class="bi bi-search me-2"></i>Search
+            </label>
+            <div class="input-group">
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Search by name or email"
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()">
+              <span class="input-group-text">
+                <i class="bi bi-search"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Role Filter -->
+          <div class="col-md-3">
+            <label class="form-label">
+              <i class="bi bi-person-badge me-2"></i>Role
+            </label>
+            <select class="form-select" [(ngModel)]="selectedRole" (change)="applyFilters()">
+              <option value="">All Roles</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+              <option value="manager">Manager</option>
+            </select>
+          </div>
+
+          <!-- Status Filter -->
+          <div class="col-md-3">
+            <label class="form-label">
+              <i class="bi bi-circle-fill me-2"></i>Status
+            </label>
+            <select class="form-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+
+          <!-- Filter Actions -->
+          <div class="col-12 d-flex justify-content-center gap-2 pt-3 border-top">
+            <button class="btn btn-primary" (click)="applyFilters()">
+              <i class="bi bi-funnel me-2"></i>Apply Filters
+            </button>
+            <button class="btn btn-outline-secondary" (click)="clearFilters()">
+              <i class="bi bi-x-circle me-2"></i>Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="table-card">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Last Login</th>
+                <th>Created Date</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of filteredUsers">
+                <td class="user-name fw-bold">{{user.name}}</td>
+                <td>
+                  <a href="mailto:{{user.email}}" class="email-link">
+                    {{user.email}}
+                  </a>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="getRoleClass(user.role)">
+                    {{user.role}}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="user.status === 'active' ? 'bg-success' : 'bg-secondary'">
+                    {{user.status}}
+                  </span>
+                </td>
+                <td>
+                  <span class="last-login text-muted">{{user.lastLogin | date:'short' || 'Never'}}</span>
+                </td>
+                <td class="created-date">{{user.createdAt | date:'short'}}</td>
+                <td class="text-center">
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button class="btn btn-outline-primary" (click)="editUser(user)">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-outline-warning" (click)="resetPassword(user)">
+                      <i class="bi bi-key"></i>
+                    </button>
+                    <button class="btn btn-outline-danger" (click)="deleteUser(user)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="filteredUsers.length === 0" class="empty-state">
+          <i class="bi bi-people display-1 text-muted"></i>
+          <h4 class="text-muted mt-3">No users found</h4>
+          <p class="text-muted">Try adjusting your filters or add a new user.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="filteredUsers.length > 0">
+      <nav aria-label="Users pagination">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="#" (click)="previousPage()">Previous</a>
+          </li>
+          <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
+            <a class="page-link" href="#" (click)="goToPage(page)">{{page}}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" href="#" (click)="nextPage()">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div> 

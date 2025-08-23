@@ -1,0 +1,227 @@
+<div class="stock-form-container">
+  <!-- Background Shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Form Header -->
+    <div class="form-header">
+      <div class="header-card">
+        <div class="header-content">
+          <div class="header-left">
+            <div class="header-icon">
+              <i class="bi bi-box-arrow-in-down"></i>
+            </div>
+            <div>
+              <h1 class="header-title">Add Stock Movement</h1>
+              <p class="header-subtitle">Record new stock movements for inventory tracking</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="btn btn-outline-secondary" routerLink="/stock">
+              <i class="bi bi-arrow-left me-2"></i>Back to Stock
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Form Section -->
+      <div class="col-lg-8">
+        <div class="form-card">
+          <div class="card-body">
+            <div *ngIf="productsLoading" class="loading-state">
+              <div class="spinner-container">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="loading-text">Loading products...</p>
+              </div>
+            </div>
+
+            <form [formGroup]="stockForm" (ngSubmit)="onSubmit()" *ngIf="!productsLoading">
+              <div class="form-section">
+                <h3 class="section-title">
+                  <i class="bi bi-card-text me-2"></i>Movement Details
+                </h3>
+                
+                <div class="row g-3">
+                  <!-- Product Selection -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label class="form-label">
+                        <i class="bi bi-box me-2"></i>Product *
+                      </label>
+                      <select class="form-select" formControlName="productId" [class.is-invalid]="stockForm.get('productId')?.invalid && stockForm.get('productId')?.touched">
+                        <option value="">Select a product</option>
+                        <option *ngFor="let product of products" [value]="product.id">
+                          {{ product.name }} ({{ product.sku }}) - Current Stock: {{ product.quantity }}
+                        </option>
+                      </select>
+                      <div class="invalid-feedback" *ngIf="stockForm.get('productId')?.invalid && stockForm.get('productId')?.touched">
+                        <span *ngIf="stockForm.get('productId')?.hasError('required')">Product is required</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Movement Type -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">
+                        <i class="bi bi-arrow-up-down me-2"></i>Movement Type *
+                      </label>
+                      <select class="form-select" formControlName="type" [class.is-invalid]="stockForm.get('type')?.invalid && stockForm.get('type')?.touched">
+                        <option value="">Select movement type</option>
+                        <option value="in">Stock In</option>
+                        <option value="out">Stock Out</option>
+                      </select>
+                      <div class="invalid-feedback" *ngIf="stockForm.get('type')?.invalid && stockForm.get('type')?.touched">
+                        <span *ngIf="stockForm.get('type')?.hasError('required')">Movement type is required</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Quantity -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">
+                        <i class="bi bi-hash me-2"></i>Quantity *
+                      </label>
+                      <input 
+                        type="number" 
+                        class="form-control" 
+                        formControlName="quantity" 
+                        min="1" 
+                        placeholder="Enter quantity"
+                        [class.is-invalid]="stockForm.get('quantity')?.invalid && stockForm.get('quantity')?.touched">
+                      <div class="invalid-feedback" *ngIf="stockForm.get('quantity')?.invalid && stockForm.get('quantity')?.touched">
+                        <span *ngIf="stockForm.get('quantity')?.hasError('required')">Quantity is required</span>
+                        <span *ngIf="stockForm.get('quantity')?.hasError('min')">Quantity must be at least 1</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Reason -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">
+                        <i class="bi bi-chat-text me-2"></i>Reason *
+                      </label>
+                      <select class="form-select" formControlName="reason" [class.is-invalid]="stockForm.get('reason')?.invalid && stockForm.get('reason')?.touched">
+                        <option value="">Select a reason</option>
+                        <option value="purchase">Purchase</option>
+                        <option value="sale">Sale</option>
+                        <option value="return">Return</option>
+                        <option value="adjustment">Adjustment</option>
+                        <option value="damage">Damage</option>
+                        <option value="expiry">Expiry</option>
+                        <option value="other">Other</option>
+                      </select>
+                      <div class="invalid-feedback" *ngIf="stockForm.get('reason')?.invalid && stockForm.get('reason')?.touched">
+                        <span *ngIf="stockForm.get('reason')?.hasError('required')">Reason is required</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Reference -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">
+                        <i class="bi bi-tag me-2"></i>Reference
+                      </label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        formControlName="reference" 
+                        placeholder="Enter reference (optional)">
+                    </div>
+                  </div>
+
+                  <!-- Notes -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label class="form-label">
+                        <i class="bi bi-sticky me-2"></i>Notes
+                      </label>
+                      <textarea 
+                        class="form-control" 
+                        formControlName="notes" 
+                        rows="3" 
+                        placeholder="Enter additional notes (optional)"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form Actions -->
+              <div class="form-actions d-flex justify-content-end gap-3">
+                <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+                  <i class="bi bi-x-circle me-2"></i>Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  class="btn btn-primary" 
+                  [disabled]="stockForm.invalid || loading">
+                  <span class="spinner-border spinner-border-sm me-2" *ngIf="loading" role="status" aria-hidden="true"></span>
+                  <i class="bi bi-check-circle me-2" *ngIf="!loading"></i>
+                  {{ loading ? 'Creating...' : 'Create Movement' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Information Section -->
+      <div class="col-lg-4" *ngIf="getSelectedProduct()">
+        <div class="form-card">
+          <div class="card-body">
+            <h3 class="section-title">
+              <i class="bi bi-info-circle me-2"></i>Product Information
+            </h3>
+            
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Name:</span>
+                  <span class="fw-bold">{{ getSelectedProduct()?.name }}</span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">SKU:</span>
+                  <span class="fw-bold">{{ getSelectedProduct()?.sku }}</span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Current Stock:</span>
+                  <span class="fw-bold" [class.text-success]="(getSelectedProduct()?.quantity || 0) > 0" [class.text-danger]="(getSelectedProduct()?.quantity || 0) === 0">
+                    {{ getSelectedProduct()?.quantity || 0 }}
+                  </span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Category:</span>
+                  <span class="fw-bold">{{ getSelectedProduct()?.category?.name || 'N/A' }}</span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Price:</span>
+                  <span class="fw-bold">{{ getSelectedProduct()?.price | currency }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

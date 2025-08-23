@@ -1,0 +1,165 @@
+<div class="suppliers-container">
+  <!-- Background with animated shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Page Header -->
+    <div class="suppliers-header mb-4">
+      <div class="header-card">
+        <div class="header-content">
+          <div class="header-left">
+            <div class="header-icon mb-3">
+              <i class="bi bi-truck"></i>
+            </div>
+            <div>
+              <h1 class="header-title">Suppliers</h1>
+              <p class="header-subtitle">Manage your product suppliers and vendors</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="btn btn-primary" routerLink="/suppliers/new">
+              <i class="bi bi-plus me-2"></i> Add Supplier
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Card -->
+    <div class="filters-card mb-4">
+      <div class="card-header">
+        <h5 class="card-title">
+          <i class="bi bi-sliders me-2"></i>Search & Filters
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row g-3 align-items-end">
+          <!-- Search Field -->
+          <div class="col-md-4">
+            <label class="form-label">
+              <i class="bi bi-search me-2"></i>Search
+            </label>
+            <div class="input-group">
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Search by name, email, or contact person"
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()">
+              <span class="input-group-text">
+                <i class="bi bi-search"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Status Filter -->
+          <div class="col-md-3">
+            <label class="form-label">
+              <i class="bi bi-toggle-on me-2"></i>Status
+            </label>
+            <select class="form-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+
+          <!-- Filter Actions -->
+          <div class="col-md-5 d-flex justify-content-end gap-2">
+            <button class="btn btn-primary" (click)="applyFilters()">
+              <i class="bi bi-funnel me-2"></i> Apply Filters
+            </button>
+            <button class="btn btn-outline-secondary" (click)="clearFilters()">
+              <i class="bi bi-x-circle me-2"></i> Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suppliers Table -->
+    <div class="table-card">
+      <div class="card-header">
+        <h5 class="card-title">
+          <i class="bi bi-table me-2"></i>Suppliers List
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Contact Person</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let supplier of filteredSuppliers">
+                <td class="supplier-name">{{supplier.name}}</td>
+                <td class="supplier-contact">{{supplier.contactPerson || 'N/A'}}</td>
+                <td class="supplier-email">
+                  <a href="mailto:{{supplier.email}}" class="email-link">
+                    {{supplier.email}}
+                  </a>
+                </td>
+                <td class="supplier-phone">{{supplier.phone || 'N/A'}}</td>
+                <td class="supplier-address">
+                  <span class="address-text">{{supplier.address || 'No address'}}</span>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="supplier.status === 'active' ? 'bg-success' : 'bg-secondary'">
+                    {{supplier.status}}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button class="btn btn-outline-primary" (click)="editSupplier(supplier)" title="Edit">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-outline-danger" (click)="deleteSupplier(supplier)" title="Delete">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="filteredSuppliers.length === 0" class="empty-state">
+          <i class="bi bi-truck"></i>
+          <h4>No suppliers found</h4>
+          <p>Try adjusting your filters or add a new supplier.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="filteredSuppliers.length > 0">
+      <nav aria-label="Suppliers pagination">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="#" (click)="previousPage()">Previous</a>
+          </li>
+          <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
+            <a class="page-link" href="#" (click)="goToPage(page)">{{page}}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" href="#" (click)="nextPage()">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div> 

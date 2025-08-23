@@ -1,0 +1,170 @@
+<div class="analytics-dashboard-container">
+  <!-- Background with animated shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Page Header -->
+    <div class="analytics-header mb-4">
+      <div class="header-card">
+        <div class="header-content">
+          <div class="header-left">
+            <div class="header-icon mb-3">
+              <i class="bi bi-graph-up"></i>
+            </div>
+            <div>
+              <h1 class="header-title">Analytics Dashboard</h1>
+              <p class="header-subtitle">Comprehensive insights into your inventory performance</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="btn btn-primary" (click)="refreshData()" [disabled]="loading">
+              <i class="bi bi-arrow-clockwise me-2"></i> Refresh Data
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner-container">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <p class="loading-text">Loading analytics data...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error-container">
+      <div class="error-icon">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+      <h3>Failed to load analytics data</h3>
+      <p>Please try again or contact support if the problem persists.</p>
+      <button class="btn btn-primary" (click)="refreshData()">
+        <i class="bi bi-arrow-clockwise me-2"></i> Retry
+      </button>
+    </div>
+
+    <!-- Analytics Content -->
+    <div *ngIf="!loading && !error" class="analytics-content">
+      <!-- Key Metrics Cards -->
+      <div class="metrics-grid mb-4" *ngIf="dashboardData">
+        <div class="metric-card">
+          <div class="metric-icon">
+            <i class="bi bi-box-seam"></i>
+          </div>
+          <div class="metric-content">
+            <h3>Total Products</h3>
+            <p class="metric-value">{{ dashboardData.totalProducts }}</p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+          <div class="metric-content">
+            <h3>Total Value</h3>
+            <p class="metric-value">{{ formatCurrency(dashboardData.totalValue) }}</p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <div class="metric-content">
+            <h3>Low Stock Items</h3>
+            <p class="metric-value">{{ dashboardData.lowStockItems }}</p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon">
+            <i class="bi bi-x-circle"></i>
+          </div>
+          <div class="metric-content">
+            <h3>Out of Stock</h3>
+            <p class="metric-value">{{ dashboardData.outOfStockItems }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="charts-grid">
+        <!-- Category Distribution Chart -->
+        <div class="chart-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-pie-chart me-2"></i>Category Distribution
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas baseChart
+                [data]="categoryChartData"
+                [type]="categoryChartType"
+                [options]="chartOptions">
+              </canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stock Levels Chart -->
+        <div class="chart-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-bar-chart me-2"></i>Top Products by Stock
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas baseChart
+                [data]="stockChartData"
+                [type]="stockChartType"
+                [options]="chartOptions">
+              </canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stock Movements Chart -->
+        <div class="chart-card full-width">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-graph-up me-2"></i>Monthly Stock Movements
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas baseChart
+                [data]="movementChartData"
+                [type]="movementChartType"
+                [options]="chartOptions">
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Analytics Section -->
+      <div class="additional-analytics-card">
+        <div class="card-header">
+          <h5 class="card-title">
+            <i class="bi bi-lightbulb me-2"></i>Additional Analytics
+          </h5>
+        </div>
+        <div class="card-body">
+          <p class="text-muted">Additional analytics features would be implemented here with backend support.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

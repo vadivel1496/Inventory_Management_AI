@@ -1,0 +1,165 @@
+<div class="product-view-container">
+  <!-- Background with animated shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Loading product details...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-state">
+      <div class="error-icon">
+        <i class="bi bi-exclamation-triangle"></i>
+      </div>
+      <h4>Error Loading Product</h4>
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" (click)="goBack()">
+        <i class="bi bi-arrow-left me-2"></i>Go Back
+      </button>
+    </div>
+
+    <!-- Product Details -->
+    <div *ngIf="product && !loading" class="product-details">
+      <!-- Header -->
+      <div class="product-header mb-5">
+        <div class="header-card">
+          <div class="header-content">
+            <div class="header-left">
+              <div class="header-icon">
+                <i class="bi bi-box-seam"></i>
+              </div>
+              <div class="header-text">
+                <h1 class="header-title">{{ product.name }}</h1>
+                <p class="header-subtitle">Product Details</p>
+              </div>
+            </div>
+            <div class="header-right">
+              <button class="btn btn-outline-secondary me-3" (click)="goBack()">
+                <i class="bi bi-arrow-left me-2"></i>Back to Products
+              </button>
+              <button class="btn btn-primary" (click)="editProduct()">
+                <i class="bi bi-pencil me-2"></i>Edit Product
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Information Grid -->
+      <div class="product-info-grid">
+        <!-- Basic Information -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-info-circle me-3"></i>Basic Information
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Name:</span>
+              <span class="info-value">{{ product.name }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">SKU:</span>
+              <span class="info-value sku-badge">{{ product.sku }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Description:</span>
+              <span class="info-value">{{ product.description || 'No description available' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Category:</span>
+              <span class="info-value" *ngIf="product.category">
+                <span class="category-badge">
+                  <i class="bi bi-tag me-1"></i>{{ product.category.name }}
+                </span>
+              </span>
+              <span class="info-value text-muted" *ngIf="!product.category">No category assigned</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing & Stock -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-currency-dollar me-3"></i>Pricing & Stock
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Price:</span>
+              <span class="info-value price-value">${{ product.price | number:'1.2-2' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Current Stock:</span>
+              <span class="info-value stock-quantity" [ngClass]="getStockClass(product)">
+                {{ product.quantity }} units
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Low Stock Threshold:</span>
+              <span class="info-value">{{ product.lowStockThreshold || 'Not set' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Status:</span>
+              <span class="info-value">
+                <span class="status-badge" [ngClass]="getStockStatusClass(product)">
+                  <i class="bi" [ngClass]="getStockStatusIcon(product)"></i>
+                  {{ getStockStatusText(product) }}
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Supplier Information -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-truck me-3"></i>Supplier Information
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Supplier:</span>
+              <span class="info-value" *ngIf="product.supplierName">
+                {{ product.supplierName }}
+              </span>
+              <span class="info-value text-muted" *ngIf="!product.supplierName">No supplier assigned</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timestamps -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-clock me-3"></i>Timestamps
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Created:</span>
+              <span class="info-value">{{ product.createdAt | date:'medium' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Last Updated:</span>
+              <span class="info-value">{{ product.updatedAt | date:'medium' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

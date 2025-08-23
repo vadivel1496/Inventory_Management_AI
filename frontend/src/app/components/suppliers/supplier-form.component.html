@@ -1,0 +1,179 @@
+<div class="supplier-form-container">
+  <!-- Background with animated shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Page Header -->
+    <div class="form-header mb-4">
+      <div class="header-card">
+        <div class="header-content">
+          <div class="header-left">
+            <div class="header-icon mb-3">
+              <i class="bi bi-truck"></i>
+            </div>
+            <div>
+              <h1 class="header-title">{{ isEditMode ? 'Edit Supplier' : 'Add New Supplier' }}</h1>
+              <p class="header-subtitle">{{ isEditMode ? 'Update supplier information' : 'Create a new supplier for your products' }}</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="btn btn-outline-secondary" routerLink="/suppliers">
+              <i class="bi bi-arrow-left me-2"></i> Back to Suppliers
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card">
+      <div class="card-header">
+        <h5 class="card-title">
+          <i class="bi bi-card-text me-2"></i>Supplier Details
+        </h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="loading" class="loading-state">
+          <div class="spinner-container">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <p class="loading-text">Loading...</p>
+        </div>
+
+        <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()" *ngIf="!loading" class="supplier-form">
+          <div class="row g-4">
+            <!-- Basic Information -->
+            <div class="col-md-6">
+              <div class="form-section">
+                <h5 class="section-title">
+                  <i class="bi bi-card-heading me-2"></i>Basic Information
+                </h5>
+                
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-building me-2"></i>Supplier Name *
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    formControlName="name" 
+                    placeholder="Enter supplier name"
+                    [class.is-invalid]="supplierForm.get('name')?.invalid && supplierForm.get('name')?.touched">
+                  <div class="invalid-feedback" *ngIf="supplierForm.get('name')?.invalid && supplierForm.get('name')?.touched">
+                    <span *ngIf="supplierForm.get('name')?.hasError('required')">Supplier name is required</span>
+                    <span *ngIf="supplierForm.get('name')?.hasError('minlength')">Supplier name must be at least 2 characters</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-person me-2"></i>Contact Person *
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    formControlName="contactPerson" 
+                    placeholder="Enter contact person name"
+                    [class.is-invalid]="supplierForm.get('contactPerson')?.invalid && supplierForm.get('contactPerson')?.touched">
+                  <div class="invalid-feedback" *ngIf="supplierForm.get('contactPerson')?.invalid && supplierForm.get('contactPerson')?.touched">
+                    <span *ngIf="supplierForm.get('contactPerson')?.hasError('required')">Contact person is required</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="col-md-6">
+              <div class="form-section">
+                <h5 class="section-title">
+                  <i class="bi bi-envelope me-2"></i>Contact Information
+                </h5>
+                
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-envelope me-2"></i>Email Address *
+                  </label>
+                  <input 
+                    type="email" 
+                    class="form-control" 
+                    formControlName="email" 
+                    placeholder="Enter email address"
+                    [class.is-invalid]="supplierForm.get('email')?.invalid && supplierForm.get('email')?.touched">
+                  <div class="invalid-feedback" *ngIf="supplierForm.get('email')?.invalid && supplierForm.get('email')?.touched">
+                    <span *ngIf="supplierForm.get('email')?.hasError('required')">Email is required</span>
+                    <span *ngIf="supplierForm.get('email')?.hasError('email')">Please enter a valid email address</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-telephone me-2"></i>Phone Number *
+                  </label>
+                  <input 
+                    type="tel" 
+                    class="form-control" 
+                    formControlName="phone" 
+                    placeholder="Enter phone number"
+                    [class.is-invalid]="supplierForm.get('phone')?.invalid && supplierForm.get('phone')?.touched">
+                  <div class="invalid-feedback" *ngIf="supplierForm.get('phone')?.invalid && supplierForm.get('phone')?.touched">
+                    <span *ngIf="supplierForm.get('phone')?.hasError('required')">Phone number is required</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Address Information -->
+            <div class="col-12">
+              <div class="form-section">
+                <h5 class="section-title">
+                  <i class="bi bi-geo-alt me-2"></i>Address Information
+                </h5>
+                
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-house me-2"></i>Address *
+                  </label>
+                  <textarea 
+                    class="form-control" 
+                    formControlName="address" 
+                    rows="3" 
+                    placeholder="Enter complete address"
+                    [class.is-invalid]="supplierForm.get('address')?.invalid && supplierForm.get('address')?.touched"></textarea>
+                  <div class="invalid-feedback" *ngIf="supplierForm.get('address')?.invalid && supplierForm.get('address')?.touched">
+                    <span *ngIf="supplierForm.get('address')?.hasError('required')">Address is required</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions d-flex justify-content-end gap-3">
+            <button class="btn btn-outline-secondary" type="button" (click)="cancel()">
+              <i class="bi bi-x-circle me-2"></i>Cancel
+            </button>
+            <button 
+              class="btn btn-primary" 
+              type="submit" 
+              [disabled]="supplierForm.invalid || submitting">
+              <span *ngIf="!submitting">
+                <i class="bi bi-check-circle me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Supplier
+              </span>
+              <span *ngIf="submitting">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                {{ isEditMode ? 'Updating...' : 'Creating...' }}
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 

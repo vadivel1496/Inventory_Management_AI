@@ -1,0 +1,234 @@
+<div class="product-form-container">
+  <!-- Background with animated shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Page Header -->
+    <div class="form-header mb-4">
+      <div class="header-card">
+        <div class="header-content">
+          <div class="header-left">
+            <div class="header-icon mb-3">
+              <i class="bi bi-box-seam"></i>
+            </div>
+            <div>
+              <h1 class="header-title">{{ isEditMode ? 'Edit Product' : 'Add New Product' }}</h1>
+              <p class="header-subtitle">{{ isEditMode ? 'Update product information' : 'Create a new product for your inventory' }}</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="btn btn-outline-secondary" routerLink="/products">
+              <i class="bi bi-arrow-left me-2"></i> Back to Products
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card">
+      <div class="card-header">
+        <h5 class="card-title">
+          <i class="bi bi-card-text me-2"></i>Product Details
+        </h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="loading" class="loading-state">
+          <div class="spinner-container">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <p class="loading-text">Loading...</p>
+        </div>
+
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()" *ngIf="!loading" class="product-form">
+          <div class="row g-4">
+            <!-- Basic Information -->
+            <div class="col-md-6">
+              <div class="form-section">
+                <h5 class="section-title">
+                  <i class="bi bi-card-heading me-2"></i>Basic Information
+                </h5>
+                
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-tag me-2"></i>Product Name *
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    formControlName="name" 
+                    placeholder="Enter product name"
+                    [class.is-invalid]="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+                  <div class="invalid-feedback" *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+                    <span *ngIf="productForm.get('name')?.hasError('required')">Product name is required</span>
+                    <span *ngIf="productForm.get('name')?.hasError('minlength')">Product name must be at least 2 characters</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-text-paragraph me-2"></i>Description
+                  </label>
+                  <textarea 
+                    class="form-control" 
+                    formControlName="description" 
+                    rows="3" 
+                    placeholder="Enter product description"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-upc-scan me-2"></i>SKU *
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    formControlName="sku" 
+                    placeholder="Enter SKU"
+                    [class.is-invalid]="productForm.get('sku')?.invalid && productForm.get('sku')?.touched">
+                  <div class="invalid-feedback" *ngIf="productForm.get('sku')?.invalid && productForm.get('sku')?.touched">
+                    <span *ngIf="productForm.get('sku')?.hasError('required')">SKU is required</span>
+                    <span *ngIf="productForm.get('sku')?.hasError('minlength')">SKU must be at least 3 characters</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-tags me-2"></i>Category *
+                  </label>
+                  <select class="form-select" formControlName="categoryId" [class.is-invalid]="productForm.get('categoryId')?.invalid && productForm.get('categoryId')?.touched">
+                    <option value="">Select Category</option>
+                    <option *ngFor="let category of categories" [value]="category.id">
+                      {{ category.name }}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback" *ngIf="productForm.get('categoryId')?.invalid && productForm.get('categoryId')?.touched">
+                    <span *ngIf="productForm.get('categoryId')?.hasError('required')">Category is required</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pricing & Inventory -->
+            <div class="col-md-6">
+              <div class="form-section">
+                <h5 class="section-title">
+                  <i class="bi bi-cash-stack me-2"></i>Pricing & Inventory
+                </h5>
+                
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-currency-dollar me-2"></i>Price *
+                  </label>
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input 
+                      type="number" 
+                      class="form-control" 
+                      formControlName="price" 
+                      placeholder="0.00" 
+                      step="0.01"
+                      [class.is-invalid]="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+                  </div>
+                  <div class="invalid-feedback" *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+                    <span *ngIf="productForm.get('price')?.hasError('required')">Price is required</span>
+                    <span *ngIf="productForm.get('price')?.hasError('min')">Price must be greater than 0</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-box me-2"></i>Initial Quantity *
+                  </label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    formControlName="quantity" 
+                    placeholder="0"
+                    [class.is-invalid]="productForm.get('quantity')?.invalid && productForm.get('quantity')?.touched">
+                  <div class="invalid-feedback" *ngIf="productForm.get('quantity')?.invalid && productForm.get('quantity')?.touched">
+                    <span *ngIf="productForm.get('quantity')?.hasError('required')">Quantity is required</span>
+                    <span *ngIf="productForm.get('quantity')?.hasError('min')">Quantity must be 0 or greater</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Low Stock Threshold *
+                  </label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    formControlName="lowStockThreshold" 
+                    placeholder="10"
+                    [class.is-invalid]="productForm.get('lowStockThreshold')?.invalid && productForm.get('lowStockThreshold')?.touched">
+                  <div class="invalid-feedback" *ngIf="productForm.get('lowStockThreshold')?.invalid && productForm.get('lowStockThreshold')?.touched">
+                    <span *ngIf="productForm.get('lowStockThreshold')?.hasError('required')">Low stock threshold is required</span>
+                    <span *ngIf="productForm.get('lowStockThreshold')?.hasError('min')">Threshold must be 0 or greater</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Supplier Information -->
+            <div class="col-12">
+              <div class="form-section">
+                <h5 class="section-title">
+                  <i class="bi bi-truck me-2"></i>Supplier Information
+                </h5>
+                
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-person me-2"></i>Select Supplier *
+                  </label>
+                  <select class="form-select" formControlName="supplierId" [class.is-invalid]="productForm.get('supplierId')?.invalid && productForm.get('supplierId')?.touched">
+                    <option value="">Select Supplier</option>
+                    <option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                      {{ supplier.name }} - {{ supplier.contactPerson }}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback" *ngIf="productForm.get('supplierId')?.invalid && productForm.get('supplierId')?.touched">
+                    <span *ngIf="productForm.get('supplierId')?.hasError('required')">Supplier is required</span>
+                  </div>
+                </div>
+                
+                <div class="supplier-help">
+                  <p class="help-text">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Don't see your supplier? <a routerLink="/suppliers/new" class="help-link">Add a new supplier</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions d-flex justify-content-end gap-3">
+            <button class="btn btn-outline-secondary" type="button" (click)="cancel()">
+              <i class="bi bi-x-circle me-2"></i>Cancel
+            </button>
+            <button 
+              class="btn btn-primary" 
+              type="submit" 
+              [disabled]="productForm.invalid || loading">
+              <span *ngIf="!loading">
+                <i class="bi bi-check-circle me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Product
+              </span>
+              <span *ngIf="loading">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                {{ isEditMode ? 'Updating...' : 'Creating...' }}
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 

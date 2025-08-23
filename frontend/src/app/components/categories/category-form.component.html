@@ -1,0 +1,110 @@
+<div class="category-form-container">
+  <!-- Background with animated shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Page Header -->
+    <div class="form-header mb-4">
+      <div class="header-card">
+        <div class="header-content">
+          <div class="header-left">
+            <div class="header-icon mb-3">
+              <i class="bi bi-tags"></i>
+            </div>
+            <div>
+              <h1 class="header-title">{{ isEditMode ? 'Edit Category' : 'Add New Category' }}</h1>
+              <p class="header-subtitle">{{ isEditMode ? 'Update category information' : 'Create a new category for your products' }}</p>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="btn btn-outline-secondary" routerLink="/categories">
+              <i class="bi bi-arrow-left me-2"></i> Back to Categories
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card">
+      <div class="card-header">
+        <h5 class="card-title">
+          <i class="bi bi-card-text me-2"></i>Category Details
+        </h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="loading" class="loading-state">
+          <div class="spinner-container">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <p class="loading-text">Loading...</p>
+        </div>
+
+        <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" *ngIf="!loading" class="category-form">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="form-section">
+                <h5 class="section-title">
+                  <i class="bi bi-card-heading me-2"></i>Category Information
+                </h5>
+                
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-tag me-2"></i>Category Name *
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    formControlName="name" 
+                    placeholder="Enter category name"
+                    [class.is-invalid]="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched">
+                  <div class="invalid-feedback" *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched">
+                    <span *ngIf="categoryForm.get('name')?.hasError('required')">Category name is required</span>
+                    <span *ngIf="categoryForm.get('name')?.hasError('minlength')">Category name must be at least 2 characters</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="bi bi-text-paragraph me-2"></i>Description
+                  </label>
+                  <textarea 
+                    class="form-control" 
+                    formControlName="description" 
+                    rows="3" 
+                    placeholder="Enter category description (optional)"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions d-flex justify-content-end gap-3">
+            <button class="btn btn-outline-secondary" type="button" (click)="cancel()">
+              <i class="bi bi-x-circle me-2"></i>Cancel
+            </button>
+            <button 
+              class="btn btn-primary" 
+              type="submit" 
+              [disabled]="categoryForm.invalid || loading">
+              <span *ngIf="!loading">
+                <i class="bi bi-check-circle me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Category
+              </span>
+              <span *ngIf="loading">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                {{ isEditMode ? 'Updating...' : 'Creating...' }}
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 
