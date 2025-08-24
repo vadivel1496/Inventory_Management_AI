@@ -8,81 +8,116 @@
   </div>
 
   <div class="container-fluid p-4">
-    <!-- Page Header -->
-    <div class="categories-header mb-4">
+    <!-- Enhanced Page Header -->
+    <div class="categories-header mb-5">
       <div class="header-card">
         <div class="header-content">
           <div class="header-left">
-            <div class="header-icon mb-3">
+            <div class="header-icon">
               <i class="bi bi-tags"></i>
             </div>
-            <div>
+            <div class="header-text">
               <h1 class="header-title">Categories</h1>
               <p class="header-subtitle">Organize your products with categories</p>
             </div>
           </div>
           <div class="header-right">
             <button class="btn btn-primary" routerLink="/categories/new">
-              <i class="bi bi-plus me-2"></i> Add Category
+              <i class="bi bi-plus-circle me-2"></i>+ Add Category
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Filters Card -->
+    <!-- Enhanced Search & Filters Card -->
     <div class="filters-card mb-4">
       <div class="card-header">
         <h5 class="card-title">
-          <i class="bi bi-sliders me-2"></i>Search & Filters
+          <i class="bi bi-funnel me-3"></i>Search & Filters
         </h5>
       </div>
       <div class="card-body">
-        <div class="row g-3 align-items-end">
-          <!-- Search Field -->
-          <div class="col-md-8">
-            <label class="form-label">
-              <i class="bi bi-search me-2"></i>Search
-            </label>
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label class="form-label">Search by name or description</label>
             <div class="input-group">
-              <input 
-                type="text" 
-                class="form-control" 
-                placeholder="Search by name or description"
-                [(ngModel)]="searchTerm"
-                (input)="applyFilters()">
               <span class="input-group-text">
                 <i class="bi bi-search"></i>
               </span>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Search categories..."
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()">
             </div>
           </div>
-
-          <!-- Filter Actions -->
-          <div class="col-md-4 d-flex justify-content-end gap-2">
-            <button class="btn btn-primary" (click)="applyFilters()">
-              <i class="bi bi-funnel me-2"></i> Apply Filters
-            </button>
-            <button class="btn btn-outline-secondary" (click)="clearFilters()">
-              <i class="bi bi-x-circle me-2"></i> Clear
-            </button>
+          
+          <div class="filter-group">
+            <label class="form-label">Status</label>
+            <select class="form-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
           </div>
+          
+          <div class="filter-group">
+            <label class="form-label">Sort By</label>
+            <select class="form-select" [(ngModel)]="sortBy" (change)="applyFilters()">
+              <option value="name">Name</option>
+              <option value="createdAt">Created Date</option>
+              <option value="productCount">Product Count</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="filter-actions">
+          <button class="btn btn-primary" (click)="applyFilters()">
+            <i class="bi bi-funnel me-2"></i>Apply Filters
+          </button>
+          <button class="btn btn-outline-secondary" (click)="clearFilters()">
+            <i class="bi bi-x-circle me-2"></i>Clear
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Categories Table -->
+    <!-- Enhanced Categories Table Card -->
     <div class="table-card">
       <div class="card-header">
         <h5 class="card-title">
-          <i class="bi bi-table me-2"></i>Categories List
+          <i class="bi bi-table me-3"></i>Categories List
         </h5>
+        <div class="card-actions">
+          <span class="badge">{{filteredCategories.length}} Categories</span>
+        </div>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover mb-0">
+        <!-- Loading State -->
+        <div *ngIf="loading" class="loading-state">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p>Loading categories...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error && !loading" class="error-state">
+          <div class="error-icon">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <h4>Error Loading Categories</h4>
+          <p>{{ error }}</p>
+        </div>
+
+        <!-- Categories Table -->
+        <div *ngIf="!loading && !error" class="table-responsive">
+          <table class="table table-hover">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Category</th>
                 <th>Description</th>
                 <th>Products Count</th>
                 <th>Status</th>
@@ -91,24 +126,49 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let category of filteredCategories">
-                <td class="category-name">{{category.name}}</td>
-                <td class="category-description">{{category.description || 'No description'}}</td>
+              <tr *ngFor="let category of paginatedCategories" class="category-row">
                 <td>
-                  <span class="badge bg-info">{{category.productCount || 0}}</span>
+                  <div class="category-info">
+                    <div class="category-icon">
+                      <i class="bi bi-tag"></i>
+                    </div>
+                    <div class="category-details">
+                      <div class="category-name">{{category.name}}</div>
+                      <div class="category-id">ID: {{category.id}}</div>
+                    </div>
+                  </div>
                 </td>
                 <td>
-                  <span class="badge" [ngClass]="category.isActive ? 'bg-success' : 'bg-secondary'">
-                    {{category.isActive ? 'Active' : 'Inactive'}}
+                  <div class="description-text">
+                    {{category.description || 'No description available'}}
+                  </div>
+                </td>
+                <td>
+                  <div class="products-count">
+                    <span class="count-badge">{{category.productCount || 0}}</span>
+                    <span class="count-label">products</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge" [ngClass]="getStatusClass(category)">
+                    <i class="bi" [ngClass]="getStatusIcon(category)"></i>
+                    {{getStatusText(category)}}
                   </span>
                 </td>
-                <td class="category-date">{{category.createdAt | date:'short'}}</td>
+                <td>
+                  <div class="date-info">
+                    <span class="date-value">{{category.createdAt | date:'mediumDate'}}</span>
+                  </div>
+                </td>
                 <td class="text-center">
-                  <div class="btn-group btn-group-sm" role="group">
-                    <button class="btn btn-outline-primary" (click)="editCategory(category)" title="Edit">
+                  <div class="action-buttons">
+                    <button class="btn btn-sm btn-outline-primary" (click)="editCategory(category)" title="Edit">
                       <i class="bi bi-pencil"></i>
                     </button>
-                    <button class="btn btn-outline-danger" (click)="deleteCategory(category)" title="Delete">
+                    <button class="btn btn-sm btn-outline-info" (click)="viewCategory(category)" title="View">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(category)" title="Delete">
                       <i class="bi bi-trash"></i>
                     </button>
                   </div>
@@ -118,27 +178,36 @@
           </table>
         </div>
 
-        <!-- Empty State -->
-        <div *ngIf="filteredCategories.length === 0" class="empty-state">
-          <i class="bi bi-tags"></i>
+        <!-- Enhanced Empty State -->
+        <div *ngIf="!loading && !error && filteredCategories.length === 0" class="empty-state">
+          <div class="empty-icon">
+            <i class="bi bi-tags"></i>
+          </div>
           <h4>No categories found</h4>
-          <p>Try adjusting your filters or add a new category.</p>
+          <p>Try adjusting your filters or add a new category to get started.</p>
+          <button class="btn btn-primary" routerLink="/categories/new">
+            <i class="bi bi-plus-circle me-2"></i>Add Your First Category
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Pagination -->
+    <!-- Enhanced Pagination -->
     <div class="pagination-container" *ngIf="filteredCategories.length > 0">
       <nav aria-label="Categories pagination">
         <ul class="pagination">
           <li class="page-item" [class.disabled]="currentPage === 1">
-            <a class="page-link" href="#" (click)="previousPage()">Previous</a>
+            <a class="page-link" href="#" (click)="previousPage()">
+              <i class="bi bi-chevron-left"></i>
+            </a>
           </li>
           <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
             <a class="page-link" href="#" (click)="goToPage(page)">{{page}}</a>
           </li>
           <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <a class="page-link" href="#" (click)="nextPage()">Next</a>
+            <a class="page-link" href="#" (click)="nextPage()">
+              <i class="bi bi-chevron-right"></i>
+            </a>
           </li>
         </ul>
       </nav>

@@ -16,6 +16,8 @@ export class CategoryListComponent implements OnInit {
 
   // Filter properties
   searchTerm = '';
+  selectedStatus = '';
+  sortBy = 'name';
 
   // Pagination properties
   currentPage = 1;
@@ -36,6 +38,7 @@ export class CategoryListComponent implements OnInit {
     this.categoryService.getCategories().subscribe({
       next: (response: ApiResponse<Category[]>) => {
         this.categories = response.data || [];
+        this.calculateTotalPages();
         this.loading = false;
       },
       error: (error) => {
@@ -57,21 +60,61 @@ export class CategoryListComponent implements OnInit {
       );
     }
 
+    if (this.selectedStatus) {
+      filtered = filtered.filter(category => 
+        this.getStatusText(category).toLowerCase() === this.selectedStatus.toLowerCase()
+      );
+    }
+
+    // Sort categories
+    filtered.sort((a, b) => {
+      switch (this.sortBy) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'createdAt':
+          return new Date(b.createdAt || new Date()).getTime() - new Date(a.createdAt || new Date()).getTime();
+        case 'productCount':
+          return (b.productCount || 0) - (a.productCount || 0);
+        default:
+          return 0;
+      }
+    });
+
     return filtered;
+  }
+
+  get paginatedCategories(): Category[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.filteredCategories.slice(startIndex, endIndex);
+  }
+
+  calculateTotalPages(): void {
+    this.totalPages = Math.ceil(this.filteredCategories.length / this.pageSize);
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages || 1;
+    }
   }
 
   applyFilters(): void {
     this.currentPage = 1;
-    // Filters are applied automatically through the getter
+    this.calculateTotalPages();
   }
 
   clearFilters(): void {
     this.searchTerm = '';
+    this.selectedStatus = '';
+    this.sortBy = 'name';
     this.currentPage = 1;
+    this.calculateTotalPages();
   }
 
   editCategory(category: Category): void {
     this.router.navigate(['/categories/edit', category.id]);
+  }
+
+  viewCategory(category: Category): void {
+    this.router.navigate(['/categories/view', category.id]);
   }
 
   deleteCategory(category: Category): void {
@@ -88,17 +131,40 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
+  // Status helper methods
+  getStatusClass(category: Category): string {
+    return category.isActive ? 'status-active' : 'status-inactive';
+  }
+
+  getStatusIcon(category: Category): string {
+    return category.isActive ? 'bi-check-circle' : 'bi-x-circle';
+  }
+
+  getStatusText(category: Category): string {
+    return category.isActive ? 'Active' : 'Inactive';
+  }
+
   // Pagination methods
   getPageNumbers(): number[] {
     const pages: number[] = [];
-    for (let i = 1; i <= this.totalPages; i++) {
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
     return pages;
   }
 
   goToPage(page: number): void {
-    this.currentPage = page;
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
   }
 
   previousPage(): void {

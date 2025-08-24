@@ -8,125 +8,185 @@
   </div>
 
   <div class="container-fluid p-4">
-    <!-- Page Header -->
-    <div class="suppliers-header mb-4">
+    <!-- Enhanced Page Header -->
+    <div class="suppliers-header mb-5">
       <div class="header-card">
         <div class="header-content">
           <div class="header-left">
-            <div class="header-icon mb-3">
+            <div class="header-icon">
               <i class="bi bi-truck"></i>
             </div>
-            <div>
+            <div class="header-text">
               <h1 class="header-title">Suppliers</h1>
-              <p class="header-subtitle">Manage your product suppliers and vendors</p>
+              <p class="header-subtitle">Manage your product suppliers efficiently</p>
             </div>
           </div>
           <div class="header-right">
             <button class="btn btn-primary" routerLink="/suppliers/new">
-              <i class="bi bi-plus me-2"></i> Add Supplier
+              <i class="bi bi-plus-circle me-2"></i>+ Add Supplier
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Filters Card -->
+    <!-- Enhanced Search & Filters Card -->
     <div class="filters-card mb-4">
       <div class="card-header">
         <h5 class="card-title">
-          <i class="bi bi-sliders me-2"></i>Search & Filters
+          <i class="bi bi-funnel me-3"></i>Search & Filters
         </h5>
       </div>
       <div class="card-body">
-        <div class="row g-3 align-items-end">
-          <!-- Search Field -->
-          <div class="col-md-4">
-            <label class="form-label">
-              <i class="bi bi-search me-2"></i>Search
-            </label>
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label class="form-label">Search by name or email</label>
             <div class="input-group">
-              <input 
-                type="text" 
-                class="form-control" 
-                placeholder="Search by name, email, or contact person"
-                [(ngModel)]="searchTerm"
-                (input)="applyFilters()">
               <span class="input-group-text">
                 <i class="bi bi-search"></i>
               </span>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Search suppliers..."
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()">
             </div>
           </div>
-
-          <!-- Status Filter -->
-          <div class="col-md-3">
-            <label class="form-label">
-              <i class="bi bi-toggle-on me-2"></i>Status
-            </label>
+          
+          <div class="filter-group">
+            <label class="form-label">Status</label>
             <select class="form-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
               <option value="">All Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
           </div>
-
-          <!-- Filter Actions -->
-          <div class="col-md-5 d-flex justify-content-end gap-2">
-            <button class="btn btn-primary" (click)="applyFilters()">
-              <i class="bi bi-funnel me-2"></i> Apply Filters
-            </button>
-            <button class="btn btn-outline-secondary" (click)="clearFilters()">
-              <i class="bi bi-x-circle me-2"></i> Clear
-            </button>
+          
+          <div class="filter-group">
+            <label class="form-label">Address</label>
+            <select class="form-select" [(ngModel)]="selectedCountry" (change)="applyFilters()">
+              <option value="">All Addresses</option>
+              <option *ngFor="let address of uniqueCountries" [value]="address">
+                {{address}}
+              </option>
+            </select>
           </div>
+          
+          <div class="filter-group">
+            <label class="form-label">Sort By</label>
+            <select class="form-select" [(ngModel)]="sortBy" (change)="applyFilters()">
+              <option value="name">Name</option>
+              <option value="createdAt">Created Date</option>
+              <option value="productCount">Product Count</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="filter-actions">
+          <button class="btn btn-primary" (click)="applyFilters()">
+            <i class="bi bi-funnel me-2"></i>Apply Filters
+          </button>
+          <button class="btn btn-outline-secondary" (click)="clearFilters()">
+            <i class="bi bi-x-circle me-2"></i>Clear
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Suppliers Table -->
+    <!-- Enhanced Suppliers Table Card -->
     <div class="table-card">
       <div class="card-header">
         <h5 class="card-title">
-          <i class="bi bi-table me-2"></i>Suppliers List
+          <i class="bi bi-table me-3"></i>Suppliers List
         </h5>
+        <div class="card-actions">
+          <span class="badge">{{filteredSuppliers.length}} Suppliers</span>
+        </div>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover mb-0">
+        <!-- Loading State -->
+        <div *ngIf="loading" class="loading-state">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p>Loading suppliers...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error && !loading" class="error-state">
+          <div class="error-icon">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <h4>Error Loading Suppliers</h4>
+          <p>{{ error }}</p>
+        </div>
+
+        <!-- Suppliers Table -->
+        <div *ngIf="!loading && !error" class="table-responsive">
+          <table class="table table-hover">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Contact Person</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Address</th>
+                <th>Supplier</th>
+                <th>Contact Info</th>
+                <th>Location</th>
+                <th>Products Count</th>
                 <th>Status</th>
+                <th>Created Date</th>
                 <th class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let supplier of filteredSuppliers">
-                <td class="supplier-name">{{supplier.name}}</td>
-                <td class="supplier-contact">{{supplier.contactPerson || 'N/A'}}</td>
-                <td class="supplier-email">
-                  <a href="mailto:{{supplier.email}}" class="email-link">
-                    {{supplier.email}}
-                  </a>
-                </td>
-                <td class="supplier-phone">{{supplier.phone || 'N/A'}}</td>
-                <td class="supplier-address">
-                  <span class="address-text">{{supplier.address || 'No address'}}</span>
+              <tr *ngFor="let supplier of paginatedSuppliers" class="supplier-row">
+                <td>
+                  <div class="supplier-info">
+                    <div class="supplier-icon">
+                      <i class="bi bi-truck"></i>
+                    </div>
+                    <div class="supplier-details">
+                      <div class="supplier-name">{{supplier.name}}</div>
+                      <div class="supplier-id">ID: {{supplier.id}}</div>
+                    </div>
+                  </div>
                 </td>
                 <td>
-                  <span class="badge" [ngClass]="supplier.status === 'active' ? 'bg-success' : 'bg-secondary'">
-                    {{supplier.status}}
+                  <div class="contact-info">
+                    <div class="contact-email">{{supplier.email}}</div>
+                    <div class="contact-phone">{{supplier.phone || 'No phone'}}</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="location-info">
+                    <div class="location-address">{{supplier.address || 'N/A'}}</div>
+                    <div class="location-contact">{{supplier.contactPerson || 'N/A'}}</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="products-count">
+                    <span class="count-badge">N/A</span>
+                    <span class="count-label">products</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge" [ngClass]="getStatusClass(supplier)">
+                    <i class="bi" [ngClass]="getStatusIcon(supplier)"></i>
+                    {{getStatusText(supplier)}}
                   </span>
                 </td>
+                <td>
+                  <div class="date-info">
+                    <span class="date-value">{{supplier.createdAt | date:'mediumDate'}}</span>
+                  </div>
+                </td>
                 <td class="text-center">
-                  <div class="btn-group btn-group-sm" role="group">
-                    <button class="btn btn-outline-primary" (click)="editSupplier(supplier)" title="Edit">
+                  <div class="action-buttons">
+                    <button class="btn btn-sm btn-outline-primary" (click)="editSupplier(supplier)" title="Edit">
                       <i class="bi bi-pencil"></i>
                     </button>
-                    <button class="btn btn-outline-danger" (click)="deleteSupplier(supplier)" title="Delete">
+                    <button class="btn btn-sm btn-outline-info" (click)="viewSupplier(supplier)" title="View">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="deleteSupplier(supplier)" title="Delete">
                       <i class="bi bi-trash"></i>
                     </button>
                   </div>
@@ -136,27 +196,36 @@
           </table>
         </div>
 
-        <!-- Empty State -->
-        <div *ngIf="filteredSuppliers.length === 0" class="empty-state">
-          <i class="bi bi-truck"></i>
+        <!-- Enhanced Empty State -->
+        <div *ngIf="!loading && !error && filteredSuppliers.length === 0" class="empty-state">
+          <div class="empty-icon">
+            <i class="bi bi-truck"></i>
+          </div>
           <h4>No suppliers found</h4>
-          <p>Try adjusting your filters or add a new supplier.</p>
+          <p>Try adjusting your filters or add a new supplier to get started.</p>
+          <button class="btn btn-primary" routerLink="/suppliers/new">
+            <i class="bi bi-plus-circle me-2"></i>Add Your First Supplier
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Pagination -->
+    <!-- Enhanced Pagination -->
     <div class="pagination-container" *ngIf="filteredSuppliers.length > 0">
       <nav aria-label="Suppliers pagination">
         <ul class="pagination">
           <li class="page-item" [class.disabled]="currentPage === 1">
-            <a class="page-link" href="#" (click)="previousPage()">Previous</a>
+            <a class="page-link" href="#" (click)="previousPage()">
+              <i class="bi bi-chevron-left"></i>
+            </a>
           </li>
           <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
             <a class="page-link" href="#" (click)="goToPage(page)">{{page}}</a>
           </li>
           <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <a class="page-link" href="#" (click)="nextPage()">Next</a>
+            <a class="page-link" href="#" (click)="nextPage()">
+              <i class="bi bi-chevron-right"></i>
+            </a>
           </li>
         </ul>
       </nav>

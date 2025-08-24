@@ -61,7 +61,7 @@ body .mat-mdc-form-field {
 
 /* Custom Bootstrap utility classes */
 .bg-gradient-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 50%, #3b82f6 100%) !important; /* Updated to match new design */
 }
 
 .card-hover {
@@ -73,13 +73,13 @@ body .mat-mdc-form-field {
 }
 
 .btn-gradient-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 50%, #3b82f6 100%); /* Updated to match new design */
   border: none;
   color: white;
   &:hover {
-    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    background: linear-gradient(135deg, #9333ea 0%, #7c3aed 50%, #2563eb 100%); /* Darker version for hover */
     transform: translateY(-2px);
-    box-shadow: 0 0.5rem 1rem rgba(102, 126, 234, 0.3);
+    box-shadow: 0 0.5rem 1rem rgba(168, 85, 247, 0.3);
   }
 }
 
@@ -162,14 +162,14 @@ body .mat-mdc-form-field {
 }
 
 .text-gradient-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 50%, #3b82f6 100%); /* Updated to match new design */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .bg-soft-primary {
-  background-color: rgba(102, 126, 234, 0.1);
+  background-color: rgba(168, 85, 247, 0.1); /* Updated to match new design */
 }
 
 /* Page-specific filter grid layouts */

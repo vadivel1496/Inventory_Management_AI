@@ -17,6 +17,8 @@ export class SupplierListComponent implements OnInit {
   // Filter properties
   searchTerm = '';
   selectedStatus = '';
+  selectedCountry = '';
+  sortBy = 'name';
 
   // Pagination properties
   currentPage = 1;
@@ -37,6 +39,7 @@ export class SupplierListComponent implements OnInit {
     this.supplierService.getSuppliers().subscribe({
       next: (response: ApiResponse<Supplier[]>) => {
         this.suppliers = response.data || [];
+        this.calculateTotalPages();
         this.loading = false;
       },
       error: (error) => {
@@ -60,25 +63,73 @@ export class SupplierListComponent implements OnInit {
     }
 
     if (this.selectedStatus) {
-      filtered = filtered.filter(supplier => supplier.status === this.selectedStatus);
+      filtered = filtered.filter(supplier => 
+        this.getStatusText(supplier).toLowerCase() === this.selectedStatus.toLowerCase()
+      );
     }
+
+    if (this.selectedCountry) {
+      filtered = filtered.filter(supplier => supplier.address && supplier.address.includes(this.selectedCountry));
+    }
+
+    // Sort suppliers
+    filtered.sort((a, b) => {
+      switch (this.sortBy) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'createdAt':
+          return new Date(b.createdAt || new Date()).getTime() - new Date(a.createdAt || new Date()).getTime();
+        case 'productCount':
+          return 0; // No product count available
+        default:
+          return 0;
+      }
+    });
 
     return filtered;
   }
 
+  get paginatedSuppliers(): Supplier[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.filteredSuppliers.slice(startIndex, endIndex);
+  }
+
+  get uniqueCountries(): string[] {
+    const addresses = this.suppliers
+      .map(supplier => supplier.address)
+      .filter(address => address && address.trim() !== '')
+      .filter((address, index, arr) => arr.indexOf(address) === index);
+    return addresses.sort();
+  }
+
+  calculateTotalPages(): void {
+    this.totalPages = Math.ceil(this.filteredSuppliers.length / this.pageSize);
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages || 1;
+    }
+  }
+
   applyFilters(): void {
     this.currentPage = 1;
-    // Filters are applied automatically through the getter
+    this.calculateTotalPages();
   }
 
   clearFilters(): void {
     this.searchTerm = '';
     this.selectedStatus = '';
+    this.selectedCountry = '';
+    this.sortBy = 'name';
     this.currentPage = 1;
+    this.calculateTotalPages();
   }
 
   editSupplier(supplier: Supplier): void {
     this.router.navigate(['/suppliers/edit', supplier.id]);
+  }
+
+  viewSupplier(supplier: Supplier): void {
+    this.router.navigate(['/suppliers/view', supplier.id]);
   }
 
   deleteSupplier(supplier: Supplier): void {
@@ -95,17 +146,40 @@ export class SupplierListComponent implements OnInit {
     }
   }
 
+  // Status helper methods
+  getStatusClass(supplier: Supplier): string {
+    return supplier.status === 'active' ? 'status-active' : 'status-inactive';
+  }
+
+  getStatusIcon(supplier: Supplier): string {
+    return supplier.status === 'active' ? 'bi-check-circle' : 'bi-x-circle';
+  }
+
+  getStatusText(supplier: Supplier): string {
+    return supplier.status === 'active' ? 'Active' : 'Inactive';
+  }
+
   // Pagination methods
   getPageNumbers(): number[] {
     const pages: number[] = [];
-    for (let i = 1; i <= this.totalPages; i++) {
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
     return pages;
   }
 
   goToPage(page: number): void {
-    this.currentPage = page;
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
   }
 
   previousPage(): void {

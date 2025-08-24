@@ -17,9 +17,11 @@ export class StockListComponent implements OnInit {
   error = '';
 
   // Filter properties
+  searchTerm = '';
   selectedMovementType = '';
   startDate = '';
   endDate = '';
+  sortBy = 'date';
 
   // Pagination properties
   currentPage = 1;
@@ -42,7 +44,7 @@ export class StockListComponent implements OnInit {
       next: (response: ApiResponse<StockMovementListResponse>) => {
         if (response.data && response.data.movements) {
           this.movements = response.data.movements;
-          this.totalPages = response.data.pagination?.pages || 1;
+          this.calculateTotalPages();
         } else {
           this.movements = [];
         }
@@ -59,6 +61,15 @@ export class StockListComponent implements OnInit {
   get filteredMovements(): StockMovement[] {
     let filtered = this.movements;
 
+    if (this.searchTerm) {
+      const search = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(movement => 
+        (movement.product?.name && movement.product.name.toLowerCase().includes(search)) ||
+        (movement.reference && movement.reference.toLowerCase().includes(search)) ||
+        (movement.user?.name && movement.user.name.toLowerCase().includes(search))
+      );
+    }
+
     if (this.selectedMovementType) {
       filtered = filtered.filter(movement => movement.type === this.selectedMovementType);
     }
@@ -73,19 +84,55 @@ export class StockListComponent implements OnInit {
       filtered = filtered.filter(movement => new Date(movement.date) <= end);
     }
 
+    // Sort movements
+    filtered.sort((a, b) => {
+      switch (this.sortBy) {
+        case 'date':
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case 'product':
+          return (a.product?.name || '').localeCompare(b.product?.name || '');
+        case 'quantity':
+          return b.quantity - a.quantity;
+        case 'type':
+          return a.type.localeCompare(b.type);
+        default:
+          return 0;
+      }
+    });
+
     return filtered;
+  }
+
+  get paginatedMovements(): StockMovement[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.filteredMovements.slice(startIndex, endIndex);
+  }
+
+  calculateTotalPages(): void {
+    this.totalPages = Math.ceil(this.filteredMovements.length / this.pageSize);
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages || 1;
+    }
   }
 
   applyFilters(): void {
     this.currentPage = 1;
-    // Filters are applied automatically through the getter
+    this.calculateTotalPages();
   }
 
   clearFilters(): void {
+    this.searchTerm = '';
     this.selectedMovementType = '';
     this.startDate = '';
     this.endDate = '';
+    this.sortBy = 'date';
     this.currentPage = 1;
+    this.calculateTotalPages();
+  }
+
+  editMovement(movement: StockMovement): void {
+    this.router.navigate(['/stock/edit', movement.id]);
   }
 
   viewMovement(movement: StockMovement): void {
@@ -98,27 +145,14 @@ export class StockListComponent implements OnInit {
       panelClass: 'stock-movement-dialog',
       disableClose: false,
       autoFocus: false,
-      position: { top: '50px' },
-      hasBackdrop: true,
-      backdropClass: 'dialog-backdrop',
       data: movement
     });
 
-    // Ensure proper positioning after dialog opens
-    dialogRef.afterOpened().subscribe(() => {
-      const dialogElement = document.querySelector('.stock-movement-dialog');
-      if (dialogElement) {
-        (dialogElement as HTMLElement).style.position = 'fixed';
-        (dialogElement as HTMLElement).style.top = '50%';
-        (dialogElement as HTMLElement).style.left = '50%';
-        (dialogElement as HTMLElement).style.transform = 'translate(-50%, -50%)';
-        (dialogElement as HTMLElement).style.zIndex = '1001';
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'refresh') {
+        this.loadMovements();
       }
     });
-  }
-
-  editMovement(movement: StockMovement): void {
-    this.router.navigate(['/stock/edit', movement.id]);
   }
 
   deleteMovement(movement: StockMovement): void {
@@ -135,25 +169,94 @@ export class StockListComponent implements OnInit {
     }
   }
 
-  getMovementTypeClass(type: string): string {
-    return type === 'in' ? 'bg-success' : 'bg-danger';
+  // Movement helper methods
+  getMovementIconClass(movement: StockMovement): string {
+    switch (movement.type) {
+      case 'in':
+        return 'movement-in';
+      case 'out':
+        return 'movement-out';
+      default:
+        return 'movement-in';
+    }
   }
 
-  getMovementTypeText(type: string): string {
-    return type === 'in' ? 'Stock In' : 'Stock Out';
+  getMovementIcon(movement: StockMovement): string {
+    switch (movement.type) {
+      case 'in':
+        return 'bi-arrow-down-circle';
+      case 'out':
+        return 'bi-arrow-up-circle';
+      default:
+        return 'bi-arrow-down-circle';
+    }
+  }
+
+  getTypeClass(movement: StockMovement): string {
+    switch (movement.type) {
+      case 'in':
+        return 'type-in';
+      case 'out':
+        return 'type-out';
+      default:
+        return 'type-in';
+    }
+  }
+
+  getTypeIcon(movement: StockMovement): string {
+    switch (movement.type) {
+      case 'in':
+        return 'bi-arrow-down-circle';
+      case 'out':
+        return 'bi-arrow-up-circle';
+      default:
+        return 'bi-arrow-down-circle';
+    }
+  }
+
+  getTypeText(movement: StockMovement): string {
+    switch (movement.type) {
+      case 'in':
+        return 'Stock In';
+      case 'out':
+        return 'Stock Out';
+      default:
+        return 'Stock In';
+    }
+  }
+
+  getQuantityClass(movement: StockMovement): string {
+    switch (movement.type) {
+      case 'in':
+        return 'quantity-in';
+      case 'out':
+        return 'quantity-out';
+      default:
+        return 'quantity-in';
+    }
   }
 
   // Pagination methods
   getPageNumbers(): number[] {
     const pages: number[] = [];
-    for (let i = 1; i <= this.totalPages; i++) {
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
     return pages;
   }
 
   goToPage(page: number): void {
-    this.currentPage = page;
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
   }
 
   previousPage(): void {

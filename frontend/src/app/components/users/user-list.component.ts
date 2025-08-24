@@ -18,6 +18,7 @@ export class UserListComponent implements OnInit {
   searchTerm = '';
   selectedRole = '';
   selectedStatus = '';
+  sortBy = 'name';
 
   // Pagination properties
   currentPage = 1;
@@ -38,6 +39,7 @@ export class UserListComponent implements OnInit {
     this.authService.getUsers().subscribe({
       next: (response: ApiResponse<User[]>) => {
         this.users = response.data || [];
+        this.calculateTotalPages();
         this.loading = false;
       },
       error: (error) => {
@@ -67,23 +69,58 @@ export class UserListComponent implements OnInit {
       filtered = filtered.filter(user => user.status === this.selectedStatus);
     }
 
+    // Sort users
+    filtered.sort((a, b) => {
+      switch (this.sortBy) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'email':
+          return a.email.localeCompare(b.email);
+        case 'role':
+          return a.role.localeCompare(b.role);
+        case 'createdAt':
+          return new Date(b.createdAt || new Date()).getTime() - new Date(a.createdAt || new Date()).getTime();
+        default:
+          return 0;
+      }
+    });
+
     return filtered;
+  }
+
+  get paginatedUsers(): User[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.filteredUsers.slice(startIndex, endIndex);
+  }
+
+  calculateTotalPages(): void {
+    this.totalPages = Math.ceil(this.filteredUsers.length / this.pageSize);
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages || 1;
+    }
   }
 
   applyFilters(): void {
     this.currentPage = 1;
-    // Filters are applied automatically through the getter
+    this.calculateTotalPages();
   }
 
   clearFilters(): void {
     this.searchTerm = '';
     this.selectedRole = '';
     this.selectedStatus = '';
+    this.sortBy = 'name';
     this.currentPage = 1;
+    this.calculateTotalPages();
   }
 
   editUser(user: User): void {
     this.router.navigate(['/users/edit', user.id]);
+  }
+
+  viewUser(user: User): void {
+    this.router.navigate(['/users/view', user.id]);
   }
 
   deleteUser(user: User): void {
@@ -100,34 +137,74 @@ export class UserListComponent implements OnInit {
     }
   }
 
-  resetPassword(user: User): void {
-    if (confirm(`Are you sure you want to reset the password for ${user.name}?`)) {
-      // Implementation for password reset
-      console.log('Resetting password for user:', user.id);
-      alert('Password reset functionality to be implemented');
+  // Role helper methods
+  getRoleClass(user: User): string {
+    switch (user.role) {
+      case 'admin':
+        return 'role-admin';
+      case 'user':
+        return 'role-user';
+      default:
+        return 'role-user';
     }
   }
 
-  getRoleClass(role: string): string {
-    switch (role) {
-      case 'admin': return 'bg-danger';
-      case 'manager': return 'bg-warning';
-      case 'user': return 'bg-info';
-      default: return 'bg-secondary';
+  getRoleIcon(user: User): string {
+    switch (user.role) {
+      case 'admin':
+        return 'bi-shield-check';
+      case 'user':
+        return 'bi-person';
+      default:
+        return 'bi-person';
     }
+  }
+
+  getRoleText(user: User): string {
+    switch (user.role) {
+      case 'admin':
+        return 'Admin';
+      case 'user':
+        return 'User';
+      default:
+        return 'User';
+    }
+  }
+
+  // Status helper methods
+  getStatusClass(user: User): string {
+    return user.status === 'active' ? 'status-active' : 'status-inactive';
+  }
+
+  getStatusIcon(user: User): string {
+    return user.status === 'active' ? 'bi-check-circle' : 'bi-x-circle';
+  }
+
+  getStatusText(user: User): string {
+    return user.status === 'active' ? 'Active' : 'Inactive';
   }
 
   // Pagination methods
   getPageNumbers(): number[] {
     const pages: number[] = [];
-    for (let i = 1; i <= this.totalPages; i++) {
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
     return pages;
   }
 
   goToPage(page: number): void {
-    this.currentPage = page;
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
   }
 
   previousPage(): void {
