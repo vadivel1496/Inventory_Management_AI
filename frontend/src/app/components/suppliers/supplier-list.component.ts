@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupplierService } from '../../services/supplier.service';
-import { Supplier } from '../../models/supplier.model';
+import { Supplier, SupplierListResponse } from '../../models/supplier.model';
 import { ApiResponse } from '../../models/user.model';
 
 @Component({
@@ -37,9 +37,14 @@ export class SupplierListComponent implements OnInit {
   loadSuppliers(): void {
     this.loading = true;
     this.supplierService.getSuppliers().subscribe({
-      next: (response: ApiResponse<Supplier[]>) => {
-        this.suppliers = response.data || [];
-        this.calculateTotalPages();
+      next: (response: SupplierListResponse) => {
+        if (response.success && response.data) {
+          this.suppliers = response.data;
+          this.calculateTotalPages();
+        } else {
+          this.suppliers = [];
+          this.calculateTotalPages();
+        }
         this.loading = false;
       },
       error: (error) => {

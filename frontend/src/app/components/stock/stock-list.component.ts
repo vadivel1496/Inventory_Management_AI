@@ -42,11 +42,16 @@ export class StockListComponent implements OnInit {
     this.loading = true;
     this.stockService.getStockMovements().subscribe({
       next: (response: ApiResponse<StockMovementListResponse>) => {
-        if (response.data && response.data.movements) {
+        if (response.success && response.data && response.data.movements) {
           this.movements = response.data.movements;
+          this.calculateTotalPages();
+        } else if (response.success && response.data) {
+          // Handle case where data might be directly an array
+          this.movements = Array.isArray(response.data) ? response.data : [];
           this.calculateTotalPages();
         } else {
           this.movements = [];
+          this.calculateTotalPages();
         }
         this.loading = false;
       },

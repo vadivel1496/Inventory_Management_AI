@@ -27,8 +27,9 @@
              id="userDropdown"
              data-bs-toggle="dropdown" 
              aria-expanded="false">
-            <i class="bi bi-person-circle me-2"></i>
+            <i class="bi bi-person-circle"></i>
             {{ currentUser?.name || 'User' }}
+
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
             <li><a class="dropdown-item" href="#" (click)="goToProfile()"><i class="bi bi-person me-2"></i>Profile</a></li>
@@ -120,13 +121,7 @@
           </li>
         </ul>
         
-        <!-- Sidebar Footer -->
-        <div class="sidebar-footer">
-          <div class="footer-content">
-            <i class="bi bi-info-circle"></i>
-            <span>Inventory Management System</span>
-          </div>
-        </div>
+
       </div>
     </nav>
     <!-- Main Content -->

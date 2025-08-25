@@ -238,15 +238,15 @@
 .input-group-text {
   background: rgba(139, 92, 246, 0.1);
   border: 2px solid rgba(139, 92, 246, 0.2);
-  border-left: none;
+  border-right: none;
   color: #8b5cf6;
-  border-radius: 0 12px 12px 0;
+  border-radius: 12px 0 0 12px;
   padding: 0.875rem 1rem;
 }
 
 .input-group .form-control {
-  border-right: none;
-  border-radius: 12px 0 0 12px;
+  border-left: none;
+  border-radius: 0 12px 12px 0;
 }
 
 .filter-actions {
@@ -643,4 +643,4 @@
     flex-direction: column;
     gap: 0.25rem;
   }
-} 
+}

@@ -36,7 +36,7 @@
 
 /* Top Navigation Bar - Enhanced Design */
 .navbar {
-  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #667eea, #764ba2); // Changed to specified gradient
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
@@ -46,8 +46,65 @@
   right: 0 !important;
   width: 100% !important;
   z-index: 1030;
-  height: 70px;
-  padding: 0.75rem 2rem;
+  height: 42px; // Reduced from 70px by 40%
+  padding: 0.45rem 1.2rem; // Reduced from 0.75rem 2rem by 40%
+  min-height: 3.6rem; // Reduced from 6rem by 40%
+  
+  .navbar-brand {
+    font-size: 0.84rem; // Reduced from 1.4rem by 40%
+    padding: 0.3rem 0; // Reduced from 0.5rem 0 by 40%
+    
+    i {
+      font-size: 1.08rem; // Reduced from 1.8rem by 40%
+      margin-right: 0.6rem; // Reduced from 1rem by 40%
+    }
+  }
+  
+  .btn {
+    padding: 0.3rem 0.6rem; // Reduced from 0.5rem 1rem by 40%
+    font-size: 0.6rem; // Reduced from 1rem by 40%
+    margin-right: 0.9rem; // Reduced from 1.5rem by 40%
+    
+    i {
+      font-size: 0.9rem; // Reduced from 1.5rem by 40%
+    }
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.45rem 0.9rem; // Reduced from 0.75rem 1.5rem by 40%
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem; // Reduced from 1rem by 40%
+    font-weight: 600;
+    
+    &:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+    }
+    
+    &.active {
+      color: white;
+      background: rgba(255, 255, 255, 0.25);
+      font-weight: 700;
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+    }
+  }
+  
+  .dropdown-toggle {
+    color: #fff !important; // User profile text color changed to white
+    
+    i {
+      color: #fff !important; // Icon color changed to white
+    }
+    
+    &::after {
+      color: #fff !important; // Dropdown arrow color changed to white
+    }
+  }
 }
 
 .navbar-brand {
@@ -129,10 +186,10 @@
 /* Enhanced Sidebar Navigation */
 .sidebar-nav {
   position: fixed;
-  top: 70px;
+  top: 42px; // Updated from 70px to match new navbar height
   left: 0;
-  width: 320px;
-  height: calc(100vh - 70px);
+  width: 192px; // Reduced from 320px by 40%
+  height: calc(100vh - 42px); // Updated from 70px to match new navbar height
   background: #f3f4f6; /* Light purple background as shown in image */
   backdrop-filter: blur(20px);
   border-right: 1px solid rgba(0, 0, 0, 0.1);
@@ -140,10 +197,10 @@
   z-index: 1020;
   overflow-y: auto;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 2rem 0;
+  padding: 1.2rem 0; // Reduced from 2rem by 40%
   
   &.collapsed {
-    width: 80px;
+    width: 60px; // Reduced to 60px for minimal width with just icons
     
     .nav-text,
     .sidebar-title span,
@@ -154,43 +211,74 @@
     
     .nav-link {
       justify-content: center;
-      padding: 1.25rem 0.5rem;
+      padding: 0.4rem 0; // Remove horizontal padding completely
+      min-height: 36px; // Further reduced height for tighter alignment
       
       .nav-icon {
         margin: 0;
+        // Ensure icons remain visible when collapsed
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+        // Center icons properly when collapsed
+        justify-content: center !important;
+        align-items: center !important;
+        
+        i {
+          // Ensure icon content remains visible
+          opacity: 1 !important;
+          visibility: visible !important;
+          display: block !important;
+          // Center icon content
+          text-align: center !important;
+        }
       }
     }
     
     .sidebar-header {
-      padding: 0 1rem 2rem;
+      padding: 0 0.2rem 0.2rem; // Minimal padding for toggle button
+      justify-content: center;
+      margin-bottom: 0.2rem; // Further reduced margin for minimal spacing
     }
     
     .sidebar-footer {
-      padding: 2rem 1rem;
+      padding: 0.2rem 0.2rem; // Minimal padding for footer
+      
+      .footer-content i {
+        // Ensure footer icon remains visible
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+      }
+    }
+    
+    .nav-menu {
+      padding: 0; // Remove all padding for perfect alignment
+      margin: 0; // Remove all margins
     }
   }
 }
 
 .sidebar-header {
-  padding: 0 2rem 2rem;
+  padding: 0 1.2rem 1.2rem; // Reduced from 2rem by 40%
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  margin-bottom: 1.2rem; // Reduced from 2rem by 40%
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .sidebar-title {
-  font-size: 1.5rem;
+  font-size: 0.9rem; // Reduced from 1.5rem by 40%
   font-weight: 700;
   color: #1f2937; /* Dark text color */
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.6rem; // Reduced from 1rem by 40%
   
   i {
-    font-size: 1.5rem;
+    font-size: 0.9rem; // Reduced from 1.5rem by 40%
     color: #7c3aed; /* Purple icon color */
   }
 }
@@ -198,9 +286,9 @@
 .sidebar-toggle-btn {
   background: #e5e7eb;
   border: none;
-  border-radius: 8px;
-  width: 40px;
-  height: 40px;
+  border-radius: 4.8px; // Reduced from 8px by 40%
+  width: 24px; // Reduced from 40px by 40%
+  height: 24px; // Reduced from 40px by 40%
   display: flex;
   align-items: center;
   justify-content: center;
@@ -214,49 +302,77 @@
   }
   
   i {
-    font-size: 1.2rem;
+    font-size: 0.72rem; // Reduced from 1.2rem by 40%
   }
+
 }
 
 .nav-menu {
   list-style: none;
   margin: 0;
-  padding: 0 1rem;
+  padding: 0 0.6rem; // Reduced from 1rem by 40%
 }
 
-.nav-item {
-  margin-bottom: 0.5rem;
+// Ensure nav menu is visible when collapsed
+.sidebar-nav.collapsed .nav-menu {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  padding: 0 0.2rem !important; // Further reduced padding for tighter alignment
+  // Ensure perfect alignment
+  text-align: center !important;
+  // Remove any margins that could affect alignment
+  margin: 0 !important;
+  // Remove any borders or shadows that could affect alignment
+  border: none !important;
+  box-shadow: none !important;
+}
+
+// Ensure nav items are visible when collapsed
+.sidebar-nav.collapsed .nav-item {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  // Ensure perfect alignment
+  text-align: center !important;
+  margin: 0 !important;
+  // Remove any borders or shadows that could affect alignment
+  border: none !important;
+  box-shadow: none !important;
+  // Remove any padding that could affect alignment
+  padding: 0 !important;
 }
 
 .nav-link {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  padding: 1.25rem 1.5rem;
+  gap: 0.75rem; // Reduced from 1.25rem by 40%
+  padding: 0.75rem 0.9rem; // Reduced from 1.25rem 1.5rem by 40%
   color: #374151; /* Dark gray text for inactive items */
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 16px;
-  margin-right: 0.5rem;
+  border-radius: 9.6px; // Reduced from 16px by 40%
+  margin-right: 0.3rem; // Reduced from 0.5rem by 40%
   font-weight: 500;
   position: relative;
   overflow: hidden;
   
   &:hover {
-    color: #7c3aed; /* Purple text on hover */
-    transform: translateX(8px);
+    color: white; // Changed to white for better contrast with gradient
+    background: linear-gradient(135deg, #667eea, #764ba2); // Changed to specified gradient
+    transform: translateX(4.8px); // Reduced from 8px by 40%
     
     .nav-icon {
-      background: rgba(124, 58, 237, 0.1);
-      color: #7c3aed;
+      background: rgba(255, 255, 255, 0.2); // Changed to white background for better contrast
+      color: white; // Changed to white for better contrast
       transform: scale(1.1);
     }
   }
   
   &.active {
     color: white;
-    background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%); /* Purple gradient for active item */
-    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
+    background: linear-gradient(135deg, #667eea, #764ba2); // Changed to specified gradient
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3); // Updated shadow color to match gradient
     font-weight: 600;
     
     .nav-icon {
@@ -267,22 +383,201 @@
   }
 }
 
+// Ensure nav links are visible when collapsed
+.sidebar-nav.collapsed .nav-link {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
 .nav-icon {
-  width: 48px;
-  height: 48px;
+  width: 28.8px; // Reduced from 48px by 40%
+  height: 28.8px; // Reduced from 48px by 40%
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
+  border-radius: 8.4px; // Reduced from 14px by 40%
   background: rgba(156, 163, 175, 0.1); /* Light gray background for inactive icons */
   color: #6b7280; /* Gray color for inactive icons */
-  font-size: 1.4rem;
+  font-size: 0.84rem; // Reduced from 1.4rem by 40%
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
+  
+  i {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// Ensure nav icons are always visible
+.sidebar-nav .nav-icon,
+.sidebar-nav.collapsed .nav-icon {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  
+  i {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+// Force icon visibility with highest priority
+.sidebar-nav * .nav-icon,
+.sidebar-nav.collapsed * .nav-icon {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  
+  i {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+// Ultimate icon visibility override
+.sidebar-nav,
+.sidebar-nav.collapsed {
+  .nav-icon,
+  .nav-icon i {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  .nav-icon {
+    display: flex !important;
+  }
+}
+
+// Force sidebar structure visibility when collapsed
+.sidebar-nav.collapsed {
+  // Force all elements to be visible
+  * {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  // Only hide text elements
+  .nav-text,
+  .sidebar-title span,
+  .footer-content span {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+  
+  // Force icons and containers to be visible
+  .nav-icon,
+  .nav-icon i,
+  .sidebar-toggle-btn,
+  .sidebar-toggle-btn i,
+  .footer-content i {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+  }
+  
+  .nav-icon {
+    display: flex !important;
+  }
+  
+  // Force nav elements to be visible
+  .nav-menu,
+  .nav-item,
+  .nav-link {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  .nav-link {
+    display: flex !important;
+  }
+  
+  .sidebar-content {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  // Force header and footer to be visible
+  .sidebar-header,
+  .sidebar-footer {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  // Ensure icons are properly sized and positioned
+  .nav-icon {
+    width: 32px !important; // Reduced for tighter alignment
+    height: 32px !important; // Reduced for tighter alignment
+    margin: 0 auto !important;
+    justify-content: center !important;
+    align-items: center !important;
+    // Ensure icons are aligned in a perfectly straight vertical line
+    position: relative !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    
+    i {
+      font-size: 1rem !important; // Adjusted for better fit
+      text-align: center !important;
+      line-height: 1 !important;
+    }
+  }
+  
+  // Ensure nav links are properly centered in a straight line
+  .nav-link {
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0.5rem 0 !important; // Remove horizontal padding completely
+    gap: 0 !important;
+    // Ensure nav links are aligned in a perfectly straight vertical line
+    position: relative !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 100% !important;
+    // Remove any horizontal margins that could affect alignment
+    margin: 0 !important;
+    // Remove any borders or shadows that could affect alignment
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
+  // Ensure toggle button is properly visible and centered
+  .sidebar-toggle-btn {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin: 0 auto !important;
+    
+    i {
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+  }
+  
+  // Ensure footer content is properly visible and centered
+  .footer-content {
+    justify-content: center !important;
+    align-items: center !important;
+    
+    i {
+      margin: 0 auto !important;
+      font-size: 0.8rem !important;
+    }
+  }
 }
 
 .nav-text {
-  font-size: 1rem;
+  font-size: 0.7rem; // Reduced from 1rem by 40%
   font-weight: 500;
   color: inherit;
   transition: all 0.3s ease;
@@ -291,29 +586,51 @@
 /* Sidebar Footer */
 .sidebar-footer {
   margin-top: auto;
-  padding: 2rem;
+  padding: 1.2rem; // Reduced from 2rem by 40%
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+// Ensure sidebar footer is visible when collapsed
+.sidebar-nav.collapsed .sidebar-footer {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  justify-content: center !important;
 }
 
 .footer-content {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.45rem; // Reduced from 0.75rem by 40%
   color: #6b7280; /* Gray text color */
-  font-size: 0.875rem;
+  font-size: 0.6rem; // Reduced from 0.875rem by 40%
   font-weight: 500;
   
   i {
-    font-size: 1rem;
+    font-size: 0.9rem; // Reduced from 1rem by 40%
     color: #6b7280; /* Gray icon color */
+  }
+}
+
+// Ensure footer content is visible when collapsed
+.sidebar-nav.collapsed .footer-content {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  justify-content: center !important;
+  
+  i {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
   }
 }
 
 /* Main Content Area - Enhanced */
 main {
-  margin-left: 320px;
-  min-height: calc(100vh - 70px);
-  margin-top: 70px;
+  margin-left: 192px; // Updated from 320px to match new sidebar width
+  min-height: calc(100vh - 42px); // Updated from 70px to match new navbar height
+  margin-top: 42px; // Updated from 70px to match new navbar height
   padding: 2rem;
   position: relative;
   z-index: 1;
@@ -322,7 +639,7 @@ main {
   transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   &.sidebar-collapsed {
-    margin-left: 80px;
+    margin-left: 60px; // Updated to match new collapsed sidebar width
   }
 }
 
@@ -352,18 +669,26 @@ main {
 @media (max-width: 768px) {
   .navbar {
     padding: 0.75rem 1.5rem;
-    height: 65px;
+    height: 42px; // Updated from 70px to match new navbar height
   }
   
   .sidebar-nav {
-    top: 65px;
-    height: calc(100vh - 65px);
-    width: 280px;
+    top: 42px; // Updated from 70px to match new navbar height
+    height: calc(100vh - 42px); // Updated from 70px to match new navbar height
+    width: 168px; // Reduced from 280px by 40%
+    
+    &.collapsed {
+      width: 60px; // Match the collapsed width for mobile
+    }
   }
   
   main {
-    margin-top: 65px;
+    margin-top: 42px; // Updated from 70px to match new navbar height
     padding: 1.5rem;
+    
+    &.sidebar-collapsed {
+      margin-left: 60px; // Match the collapsed sidebar width for mobile
+    }
   }
   
   .navbar-brand {
@@ -421,8 +746,7 @@ main {
   }
 }
 
-/* Enhanced Dropdown Styles */
-.dropdown-menu {
+/* Enhanced Dropdown Styles */.dropdown-menu {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -430,6 +754,18 @@ main {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   padding: 0.75rem 0;
   margin-top: 0.5rem;
+}
+
+.dropdown-toggle {
+  color: #fff !important; // User profile text color changed to white
+  
+  i {
+    color: #fff !important; // Icon color changed to white
+  }
+  
+  &::after {
+    color: #fff !important; // Dropdown arrow color changed to white
+  }
 }
 
 .dropdown-item {
@@ -456,3 +792,28 @@ main {
   margin: 0.5rem 1rem;
   border-color: rgba(0, 0, 0, 0.1);
 } 
+
+.sidebar-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+// Ensure proper structure when collapsed
+.sidebar-nav.collapsed .sidebar-content {
+  display: flex !important;
+  flex-direction: column !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  // Ensure perfect alignment
+  align-items: center !important;
+  justify-content: flex-start !important;
+  // Remove any margins that could affect alignment
+  margin: 0 !important;
+  padding: 0 !important;
+  // Remove any borders or shadows that could affect alignment
+  border: none !important;
+  box-shadow: none !important;
+} 
+

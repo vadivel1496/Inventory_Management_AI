@@ -38,8 +38,13 @@ export class UserListComponent implements OnInit {
     this.loading = true;
     this.authService.getUsers().subscribe({
       next: (response: ApiResponse<User[]>) => {
-        this.users = response.data || [];
-        this.calculateTotalPages();
+        if (response.success && response.data) {
+          this.users = response.data;
+          this.calculateTotalPages();
+        } else {
+          this.users = [];
+          this.calculateTotalPages();
+        }
         this.loading = false;
       },
       error: (error) => {

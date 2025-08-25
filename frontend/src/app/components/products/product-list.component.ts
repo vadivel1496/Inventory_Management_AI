@@ -4,6 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../services/category.service';
 import { Product, Category } from '../../models/product.model';
 import { ApiResponse } from '../../models/user.model';
+import { ProductListResponse } from '../../models/product.model';
 
 @Component({
   selector: 'app-product-list',
@@ -42,12 +43,17 @@ export class ProductListComponent implements OnInit {
   loadProducts(): void {
     this.loading = true;
     this.productService.getProducts().subscribe({
-      next: (response: ApiResponse<any>) => {
-        if (response.data && response.data.products) {
+      next: (response: ApiResponse<ProductListResponse>) => {
+        if (response.success && response.data && response.data.products) {
           this.products = response.data.products;
           this.totalPages = response.data.pagination?.pages || 1;
+        } else if (response.success && response.data) {
+          // Handle case where data might be directly an array
+          this.products = Array.isArray(response.data) ? response.data : [];
+          this.totalPages = 1;
         } else {
-          this.products = response.data || [];
+          this.products = [];
+          this.totalPages = 1;
         }
         this.loading = false;
       },
@@ -62,10 +68,15 @@ export class ProductListComponent implements OnInit {
   loadCategories(): void {
     this.categoryService.getCategories().subscribe({
       next: (response: ApiResponse<Category[]>) => {
-        this.categories = response.data || [];
+        if (response.success && response.data) {
+          this.categories = response.data;
+        } else {
+          this.categories = [];
+        }
       },
       error: (error) => {
         console.error('Error loading categories:', error);
+        this.categories = [];
       }
     });
   }
@@ -102,7 +113,13 @@ export class ProductListComponent implements OnInit {
       });
     }
 
-    return filtered;
+    // Calculate total pages based on filtered results
+    this.totalPages = Math.ceil(filtered.length / this.pageSize);
+    
+    // Apply pagination
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return filtered.slice(startIndex, endIndex);
   }
 
   getStockStatusClass(product: Product): string {
@@ -168,14 +185,24 @@ export class ProductListComponent implements OnInit {
   // Pagination methods
   getPageNumbers(): number[] {
     const pages: number[] = [];
-    for (let i = 1; i <= this.totalPages; i++) {
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
     return pages;
   }
 
   goToPage(page: number): void {
-    this.currentPage = page;
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
   }
 
   previousPage(): void {
