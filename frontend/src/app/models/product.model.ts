@@ -3,7 +3,7 @@ export interface Category {
   name: string;
   description?: string;
   productCount?: number;
-  isActive: boolean;
+  status: string; // Changed from isActive to status to match backend
   createdAt?: string;
   updatedAt?: string;
 }

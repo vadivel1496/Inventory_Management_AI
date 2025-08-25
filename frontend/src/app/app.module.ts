@@ -71,11 +71,6 @@ const routes: Routes = [
     canActivate: [AuthGuard] 
   },
   { 
-    path: 'analytics', 
-    loadChildren: () => import('./components/analytics/analytics.module').then(m => m.AnalyticsModule),
-    canActivate: [AuthGuard] 
-  },
-  { 
     path: 'users', 
     loadChildren: () => import('./components/users/users.module').then(m => m.UsersModule),
     canActivate: [AuthGuard, AdminGuard] 

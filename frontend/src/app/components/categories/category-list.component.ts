@@ -133,15 +133,15 @@ export class CategoryListComponent implements OnInit {
 
   // Status helper methods
   getStatusClass(category: Category): string {
-    return category.isActive ? 'status-active' : 'status-inactive';
+    return category.status === 'active' ? 'status-active' : 'status-inactive';
   }
 
   getStatusIcon(category: Category): string {
-    return category.isActive ? 'bi-check-circle' : 'bi-x-circle';
+    return category.status === 'active' ? 'bi-check-circle' : 'bi-x-circle';
   }
 
   getStatusText(category: Category): string {
-    return category.isActive ? 'Active' : 'Inactive';
+    return category.status === 'active' ? 'Active' : 'Inactive';
   }
 
   // Pagination methods

@@ -20,17 +20,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 // Components
 import { SupplierListComponent } from './supplier-list.component';
 import { SupplierFormComponent } from './supplier-form.component';
+import { SupplierViewComponent } from './supplier-view.component';
 
 const routes: Routes = [
   { path: '', component: SupplierListComponent },
   { path: 'new', component: SupplierFormComponent },
-  { path: 'edit/:id', component: SupplierFormComponent }
+  { path: 'edit/:id', component: SupplierFormComponent },
+  { path: 'view/:id', component: SupplierViewComponent }
 ];
 
 @NgModule({
   declarations: [
     SupplierListComponent,
-    SupplierFormComponent
+    SupplierFormComponent,
+    SupplierViewComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,147 @@
+<div class="supplier-view-container">
+  <!-- Background with animated shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Loading supplier details...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-state">
+      <div class="error-icon">
+        <i class="bi bi-exclamation-triangle"></i>
+      </div>
+      <h4>Error Loading Supplier</h4>
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" (click)="goBack()">
+        <i class="bi bi-arrow-left me-2"></i>Go Back
+      </button>
+    </div>
+
+    <!-- Supplier Details -->
+    <div *ngIf="supplier && !loading" class="supplier-details">
+      <!-- Header -->
+      <div class="supplier-header mb-4">
+        <div class="header-card">
+          <div class="header-content">
+            <div class="header-left">
+              <div class="header-icon mb-3">
+                <i class="bi bi-truck"></i>
+              </div>
+              <div>
+                <h1 class="header-title">{{ supplier.name }}</h1>
+                <p class="header-subtitle">Supplier Details</p>
+              </div>
+            </div>
+            <div class="header-right">
+              <button class="btn btn-outline-secondary me-3" (click)="goBack()">
+                <i class="bi bi-arrow-left me-2"></i>Back to Suppliers
+              </button>
+              <button class="btn btn-primary" (click)="editSupplier()">
+                <i class="bi bi-pencil me-2"></i>Edit Supplier
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supplier Information Grid -->
+      <div class="supplier-info-grid">
+        <!-- Basic Information -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-card-heading me-2"></i>Basic Information
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Name:</span>
+              <span class="info-value">{{ supplier.name }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">ID:</span>
+              <span class="info-value id-badge">{{ supplier.id }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Contact Person:</span>
+              <span class="info-value">{{ supplier.contactPerson }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Status:</span>
+              <span class="info-value">
+                <span class="status-badge" [ngClass]="getStatusClass(supplier)">
+                  <i class="bi" [ngClass]="getStatusIcon(supplier)"></i>
+                  {{ getStatusText(supplier) }}
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-envelope me-2"></i>Contact Information
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Email:</span>
+              <span class="info-value email-value">{{ supplier.email }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Phone:</span>
+              <span class="info-value phone-value">{{ supplier.phone }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Address Information -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-geo-alt me-2"></i>Address Information
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Address:</span>
+              <span class="info-value address-value">{{ supplier.address }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metadata -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-clock me-2"></i>Metadata
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Created Date:</span>
+              <span class="info-value">{{ supplier.createdAt | date:'medium' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Last Updated:</span>
+              <span class="info-value">{{ supplier.updatedAt | date:'medium' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

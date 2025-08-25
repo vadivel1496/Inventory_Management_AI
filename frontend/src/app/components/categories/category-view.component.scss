@@ -1,10 +1,10 @@
-/* Product View Container - Enhanced */
-.product-view-container {
+/* Category View Container - Enhanced */
+.category-view-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 50%, #3b82f6 100%); /* Updated to match new design */
   position: relative;
   overflow: hidden;
-  padding: 1rem; /* Reduced from 2rem to match Products form */
+  padding: 1rem; /* Reduced from 2rem to match Categories form */
 }
 
 /* Background Shapes - Enhanced */
@@ -92,8 +92,8 @@
 }
 
 /* Enhanced Header Styles */
-.product-header {
-  margin-bottom: 1.5rem; /* Reduced from 3rem to match Products form */
+.category-header {
+  margin-bottom: 1.5rem; /* Reduced from 3rem to match Categories form */
   position: relative;
   z-index: 2;
 }
@@ -101,14 +101,14 @@
 .header-card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
-  border-radius: 12px; /* Reduced from 24px to match Products form */
-  padding: 1.5rem; /* Reduced from 3rem to match Products form */
+  border-radius: 12px; /* Reduced from 24px to match Categories form */
+  padding: 1.5rem; /* Reduced from 3rem to match Categories form */
   box-shadow: 0 12.5px 40px rgba(139, 92, 246, 0.15); /* Reduced from 25px 80px */
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
   
   &:hover {
-    transform: translateY(-2.5px); /* Reduced from -5px to match Products form */
+    transform: translateY(-2.5px); /* Reduced from -5px to match Categories form */
     box-shadow: 0 17.5px 50px rgba(139, 92, 246, 0.2); /* Reduced from 35px 100px */
   }
 }
@@ -117,25 +117,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1.5rem; /* Reduced from 3rem to match Products form */
+  gap: 1.5rem; /* Reduced from 3rem to match Categories form */
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 1rem; /* Reduced from 2rem to match Products form */
+  gap: 1rem; /* Reduced from 2rem to match Categories form */
 }
 
 .header-icon {
-  width: 40px; /* Reduced from 80px to match Products form */
-  height: 40px; /* Reduced from 80px to match Products form */
+  width: 40px; /* Reduced from 80px to match Categories form */
+  height: 40px; /* Reduced from 80px to match Categories form */
   background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
-  border-radius: 10px; /* Reduced from 20px to match Products form */
+  border-radius: 10px; /* Reduced from 20px to match Categories form */
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 1.25rem; /* Reduced from 2.5rem to match Products form */
+  font-size: 1.25rem; /* Reduced from 2.5rem to match Categories form */
   box-shadow: 0 7.5px 20px rgba(139, 92, 246, 0.3); /* Reduced from 15px 40px */
   transition: all 0.3s ease;
   
@@ -146,7 +146,7 @@
 }
 
 .header-title {
-  font-size: 1.75rem; /* Reduced from 3rem to match Products form */
+  font-size: 1.75rem; /* Reduced from 3rem to match Categories form */
   font-weight: 800;
   color: #1e1b4b;
   margin: 0;
@@ -158,28 +158,28 @@
 }
 
 .header-subtitle {
-  font-size: 0.7rem; /* Reduced from 1.4rem to match Products form */
+  font-size: 0.7rem; /* Reduced from 1.4rem to match Categories form */
   color: #6b7280;
-  margin: 0.5rem 0 0 0; /* Reduced from 1rem to match Products form */
+  margin: 0.5rem 0 0 0; /* Reduced from 1rem to match Categories form */
   font-weight: 500;
   line-height: 1.5;
 }
 
 .header-right {
   display: flex;
-  gap: 0.5rem; /* Reduced from 1rem to match Products form */
+  gap: 0.5rem; /* Reduced from 1rem to match Categories form */
 }
 
 .btn {
-  padding: 0.625rem 1.25rem; /* Reduced from 1rem 2rem to match Products form */
-  border-radius: 8px; /* Reduced from 12px to match Products form */
-  font-weight: 700; /* Increased from 600 to match Products form */
-  font-size: 0.55rem; /* Reduced from 1rem to match Products form */
+  padding: 0.625rem 1.25rem; /* Reduced from 1rem 2rem to match Categories form */
+  border-radius: 8px; /* Reduced from 12px to match Categories form */
+  font-weight: 700; /* Increased from 600 to match Categories form */
+  font-size: 0.55rem; /* Reduced from 1rem to match Categories form */
   transition: all 0.3s ease;
-  border: 1px solid transparent; /* Reduced from 2px to match Products form */
+  border: 1px solid transparent; /* Reduced from 2px to match Categories form */
   
   &:hover {
-    transform: translateY(-1.5px); /* Reduced from -2px to match Products form */
+    transform: translateY(-1.5px); /* Reduced from -2px to match Categories form */
   }
 }
 
@@ -187,10 +187,10 @@
   background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
   border-color: transparent;
   color: white;
-  box-shadow: 0 7.5px 20px rgba(139, 92, 246, 0.3); /* Reduced from 8px 25px to match Products form */
+  box-shadow: 0 7.5px 20px rgba(139, 92, 246, 0.3); /* Reduced from 8px 25px to match Categories form */
   
   &:hover {
-    box-shadow: 0 12.5px 30px rgba(139, 92, 246, 0.4); /* Reduced from 15px 40px to match Products form */
+    box-shadow: 0 12.5px 30px rgba(139, 92, 246, 0.4); /* Reduced from 15px 40px to match Categories form */
   }
 }
 
@@ -206,11 +206,11 @@
   }
 }
 
-/* Product Information Grid */
-.product-info-grid {
+/* Category Information Grid */
+.category-info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Reduced from 400px to match Products form */
-  gap: 1.5rem; /* Reduced from 2rem to match Products form */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Reduced from 400px to match Categories form */
+  gap: 1.5rem; /* Reduced from 2rem to match Categories form */
   position: relative;
   z-index: 2;
 }
@@ -218,36 +218,36 @@
 .info-card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
-  border-radius: 10px; /* Reduced from 20px to match Products form */
-  padding: 1.25rem; /* Reduced from 2.5rem to match Products form */
-  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.1); /* Reduced from 20px 60px to match Products form */
+  border-radius: 10px; /* Reduced from 20px to match Categories form */
+  padding: 1.25rem; /* Reduced from 2.5rem to match Categories form */
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.1); /* Reduced from 20px 60px to match Categories form */
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
   
   &:hover {
-    transform: translateY(-1.5px); /* Reduced from -5px to match Products form */
-    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.15); /* Reduced from 30px 80px to match Products form */
+    transform: translateY(-1.5px); /* Reduced from -5px to match Categories form */
+    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.15); /* Reduced from 30px 80px to match Categories form */
   }
 }
 
 .card-header {
-  margin-bottom: 1rem; /* Reduced from 2rem to match Products form */
-  padding-bottom: 0.75rem; /* Reduced from 1.5rem to match Products form */
-  border-bottom: 1px solid rgba(139, 92, 246, 0.1); /* Reduced from 2px to match Products form */
+  margin-bottom: 1rem; /* Reduced from 2rem to match Categories form */
+  padding-bottom: 0.75rem; /* Reduced from 1.5rem to match Categories form */
+  border-bottom: 1px solid rgba(139, 92, 246, 0.1); /* Reduced from 2px to match Categories form */
 }
 
 .card-title {
-  font-size: 0.75rem; /* Reduced from 1.5rem to match Products form */
+  font-size: 0.75rem; /* Reduced from 1.5rem to match Categories form */
   font-weight: 700;
   color: #1e1b4b;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Reduced from 1rem to match Products form */
+  gap: 0.5rem; /* Reduced from 1rem to match Categories form */
   
   i {
     color: #8b5cf6;
-    font-size: 0.9rem; /* Reduced from 1.8rem to match Products form */
+    font-size: 0.9rem; /* Reduced from 1.8rem to match Categories form */
   }
 }
 
@@ -255,7 +255,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 0.5rem 0; /* Reduced from 1rem to match Products form */
+  padding: 0.5rem 0; /* Reduced from 1rem to match Categories form */
   border-bottom: 1px solid rgba(139, 92, 246, 0.1);
   
   &:last-child {
@@ -266,118 +266,85 @@
 .info-label {
   font-weight: 600;
   color: #6b7280;
-  font-size: 0.5rem; /* Reduced from 1rem to match Products form */
-  min-width: 120px; /* Reduced from 150px to match Products form */
+  font-size: 0.5rem; /* Reduced from 1rem to match Categories form */
+  min-width: 120px; /* Reduced from 150px to match Categories form */
 }
 
 .info-value {
   font-weight: 500;
   color: #1e1b4b;
-  font-size: 0.5rem; /* Reduced from 1rem to match Products form */
+  font-size: 0.5rem; /* Reduced from 1rem to match Categories form */
   text-align: right;
   flex: 1;
-  margin-left: 0.5rem; /* Reduced from 1rem to match Products form */
+  margin-left: 0.5rem; /* Reduced from 1rem to match Categories form */
 }
 
 /* Enhanced Badge Styles */
-.sku-badge {
+.id-badge {
   background: rgba(139, 92, 246, 0.1);
   color: #8b5cf6;
-  padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem to match Products form */
-  border-radius: 10px; /* Reduced from 20px to match Products form */
+  padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem to match Categories form */
+  border-radius: 10px; /* Reduced from 20px to match Categories form */
   font-weight: 600;
-  font-size: 0.425rem; /* Reduced from 0.85rem to match Products form */
+  font-size: 0.425rem; /* Reduced from 0.85rem to match Categories form */
   font-family: 'Courier New', monospace;
 }
 
-.category-badge {
-  background: rgba(34, 197, 94, 0.1);
-  color: #059669;
-  padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem to match Products form */
-  border-radius: 10px; /* Reduced from 20px to match Products form */
-  font-weight: 600;
-  font-size: 0.425rem; /* Reduced from 0.85rem to match Products form */
-  display: inline-flex;
-  align-items: center;
-}
-
-.price-value {
-  font-size: 0.65rem; /* Reduced from 1.3rem to match Products form */
-  font-weight: 700;
-  color: #059669;
-}
-
-.stock-quantity {
-  font-size: 0.6rem; /* Reduced from 1.2rem to match Products form */
-  font-weight: 700;
-  
-  &.in-stock {
-    color: #059669;
-  }
-  
-  &.low-stock {
-    color: #d97706;
-  }
-  
-  &.out-of-stock {
-    color: #dc2626;
-  }
-}
-
 .status-badge {
-  padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem to match Products form */
-  border-radius: 10px; /* Reduced from 20px to match Products form */
+  padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem to match Categories form */
+  border-radius: 10px; /* Reduced from 20px to match Categories form */
   font-weight: 600;
-  font-size: 0.425rem; /* Reduced from 0.85rem to match Products form */
+  font-size: 0.425rem; /* Reduced from 0.85rem to match Categories form */
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem; /* Reduced from 0.5rem to match Products form */
+  gap: 0.25rem; /* Reduced from 0.5rem to match Categories form */
   
-  &.bg-success {
+  &.status-active {
     background: rgba(34, 197, 94, 0.1);
     color: #059669;
   }
   
-  &.bg-warning {
-    background: rgba(217, 119, 6, 0.1);
-    color: #d97706;
-  }
-  
-  &.bg-danger {
+  &.status-inactive {
     background: rgba(220, 38, 38, 0.1);
     color: #dc2626;
   }
 }
 
+.products-count {
+  font-size: 0.6rem; /* Reduced from 1.2rem to match Categories form */
+  font-weight: 700;
+  color: #059669;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .product-info-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Reduced from 350px to match Products form */
-    gap: 1rem; /* Reduced from 1.5rem to match Products form */
+  .category-info-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Reduced from 350px to match Categories form */
+    gap: 1rem; /* Reduced from 1.5rem to match Categories form */
   }
 }
 
 @media (max-width: 768px) {
-  .product-view-container {
-    padding: 0.5rem; /* Reduced from 1rem to match Products form */
+  .category-view-container {
+    padding: 0.5rem; /* Reduced from 1rem to match Categories form */
   }
   
   .header-card {
-    padding: 1rem; /* Reduced from 2rem to match Products form */
+    padding: 1rem; /* Reduced from 2rem to match Categories form */
   }
   
   .header-content {
     flex-direction: column;
-    gap: 1rem; /* Reduced from 2rem to match Products form */
+    gap: 1rem; /* Reduced from 2rem to match Categories form */
     text-align: center;
   }
   
   .header-title {
-    font-size: 1.25rem; /* Reduced from 2.5rem to match Products form */
+    font-size: 1.25rem; /* Reduced from 2.5rem to match Categories form */
   }
   
   .header-subtitle {
-    font-size: 0.6rem; /* Reduced from 1.2rem to match Products form */
+    font-size: 0.6rem; /* Reduced from 1.2rem to match Categories form */
   }
   
   .header-right {
@@ -385,18 +352,18 @@
     width: 100%;
   }
   
-  .product-info-grid {
+  .category-info-grid {
     grid-template-columns: 1fr;
-    gap: 1rem; /* Reduced from 1.5rem to match Products form */
+    gap: 1rem; /* Reduced from 1.5rem to match Categories form */
   }
   
   .info-card {
-    padding: 1rem 0.75rem; /* Reduced from 2rem 1.5rem to match Products form */
+    padding: 1rem 0.75rem; /* Reduced from 2rem 1.5rem to match Categories form */
   }
   
   .info-row {
     flex-direction: column;
-    gap: 0.25rem; /* Reduced from 0.5rem to match Products form */
+    gap: 0.25rem; /* Reduced from 0.5rem to match Categories form */
     align-items: flex-start;
   }
   

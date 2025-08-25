@@ -20,17 +20,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 // Components
 import { CategoryListComponent } from './category-list.component';
 import { CategoryFormComponent } from './category-form.component';
+import { CategoryViewComponent } from './category-view.component';
 
 const routes: Routes = [
   { path: '', component: CategoryListComponent },
   { path: 'new', component: CategoryFormComponent },
-  { path: 'edit/:id', component: CategoryFormComponent }
+  { path: 'edit/:id', component: CategoryFormComponent },
+  { path: 'view/:id', component: CategoryViewComponent }
 ];
 
 @NgModule({
   declarations: [
     CategoryListComponent,
-    CategoryFormComponent
+    CategoryFormComponent,
+    CategoryViewComponent
   ],
   imports: [
     CommonModule,

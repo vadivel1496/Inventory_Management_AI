@@ -9,7 +9,7 @@
 
   <div class="container-fluid p-4">
     <!-- Enhanced Page Header -->
-    <div class="dashboard-header mb-5">
+    <div class="dashboard-header mb-4">
       <div class="header-card">
         <div class="header-content">
           <div class="header-left">
@@ -21,12 +21,17 @@
               <p class="header-subtitle">Welcome back! Here's an overview of your inventory system.</p>
             </div>
           </div>
+          <div class="header-right">
+            <button class="btn btn-primary" (click)="refreshData()" [disabled]="loading">
+              <i class="bi bi-arrow-clockwise me-2"></i> Refresh Data
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Enhanced Stats Cards Row -->
-    <div class="stats-grid mb-5">
+    <div class="stats-grid mb-4">
       <!-- Total Products -->
       <div class="stat-card">
         <div class="stat-icon">
@@ -73,8 +78,8 @@
     </div>
 
     <!-- Enhanced Charts and Tables Row -->
-    <div class="charts-grid mb-5">
-      <!-- Stock Level Chart -->
+    <div class="charts-grid mb-4">
+      <!-- Stock Levels Card -->
       <div class="chart-card">
         <div class="card-header">
           <h5 class="card-title">
@@ -82,8 +87,23 @@
           </h5>
         </div>
         <div class="card-body">
-          <div class="chart-container">
-            <canvas #stockChart></canvas>
+          <div *ngIf="hasTopProducts" class="stock-levels-content">
+            <div class="stock-item" *ngFor="let product of topProducts.slice(0, 5)">
+              <div class="product-info">
+                <span class="product-name">{{ product.name }}</span>
+                <span class="product-sku">{{ product.sku }}</span>
+              </div>
+              <div class="stock-info">
+                <span class="stock-quantity" [ngClass]="getStockStatusClass(product.quantity, 10)">
+                  {{ product.quantity }} units
+                </span>
+                <span class="stock-value">{{ formatCurrency(product.value || 0) }}</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!hasTopProducts" class="empty-state">
+            <i class="bi bi-bar-chart empty-icon"></i>
+            <p>No stock data available</p>
           </div>
         </div>
       </div>
@@ -96,21 +116,27 @@
           </h5>
         </div>
         <div class="card-body">
-          <div class="activity-list">
-            <div *ngFor="let activity of recentActivities" class="activity-item">
-              <div class="activity-icon">
-                <i class="bi" [ngClass]="getActivityIcon(activity.type)"></i>
+          <div *ngIf="hasRecentMovements" class="activities-list">
+            <div class="activity-item" *ngFor="let movement of recentMovements.slice(0, 5)">
+              <div class="activity-icon" [ngClass]="movement.type === 'in' ? 'stock-in' : 'stock-out'">
+                <i class="bi bi-arrow-left-right"></i>
               </div>
-              <div class="activity-content">
-                <h6 class="activity-title">{{activity.title}}</h6>
-                <p class="activity-description">{{activity.description}}</p>
-                <small class="activity-time">{{activity.timestamp | date:'short'}}</small>
+              <div class="activity-details">
+                <div class="activity-title">
+                  {{ movement.type === 'in' ? 'Stock Added' : 'Stock Removed' }}
+                </div>
+                <div class="activity-description">
+                  {{ movement.quantity }} units of {{ movement.product?.name || 'Unknown Product' }}
+                </div>
+                <div class="activity-time">
+                  {{ movement.createdAt | date:'M/d/yy, h:mm a' }}
+                </div>
               </div>
             </div>
-            <div *ngIf="recentActivities.length === 0" class="empty-state">
-              <i class="bi bi-inbox text-muted"></i>
-              <p>No recent activities</p>
-            </div>
+          </div>
+          <div *ngIf="!hasRecentMovements" class="empty-state">
+            <i class="bi bi-activity empty-icon"></i>
+            <p>No recent activities</p>
           </div>
         </div>
       </div>

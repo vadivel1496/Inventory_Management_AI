@@ -445,4 +445,133 @@ router.get('/reports/movements', authenticateToken, async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /analytics/products/top:
+ *   get:
+ *     summary: Get top products by stock value
+ *     tags: [Analytics]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Top products data
+ */
+router.get('/products/top', authenticateToken, async (req, res, next) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        id,
+        name,
+        sku,
+        quantity,
+        price,
+        (price * quantity) as total_value
+      FROM products 
+      WHERE is_active = true
+      ORDER BY (price * quantity) DESC
+      LIMIT 10
+    `);
+
+    const topProducts = result.rows.map(row => ({
+      id: row.id,
+      name: row.name,
+      sku: row.sku,
+      quantity: row.quantity,
+      price: parseFloat(row.price),
+      value: parseFloat(row.total_value)
+    }));
+
+    res.json({
+      success: true,
+      data: topProducts,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @swagger
+ * /analytics/movements:
+ *   get:
+ *     summary: Get recent stock movements
+ *     tags: [Analytics]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *     responses:
+ *       200:
+ *         description: Recent stock movements
+ */
+router.get('/movements', authenticateToken, async (req, res, next) => {
+  try {
+    const { startDate, endDate } = req.query;
+    
+    let dateCondition = '';
+    const params = [];
+    
+    if (startDate && endDate) {
+      dateCondition = 'WHERE sm.created_at BETWEEN $1 AND $2';
+      params.push(startDate, endDate);
+    } else if (startDate) {
+      dateCondition = 'WHERE sm.created_at >= $1';
+      params.push(startDate);
+    } else if (endDate) {
+      dateCondition = 'WHERE sm.created_at <= $1';
+      params.push(endDate);
+    }
+
+    const result = await pool.query(`
+      SELECT 
+        sm.*,
+        p.name as product_name,
+        p.sku as product_sku,
+        u.name as user_name
+      FROM stock_movements sm
+      LEFT JOIN products p ON sm.product_id = p.id
+      LEFT JOIN users u ON sm.user_id = u.id
+      ${dateCondition}
+      ORDER BY sm.created_at DESC
+      LIMIT 20
+    `, params);
+
+    const movements = result.rows.map(row => ({
+      id: row.id,
+      product: {
+        id: row.product_id,
+        name: row.product_name,
+        sku: row.product_sku
+      },
+      quantity: row.quantity,
+      type: row.type,
+      reason: row.reason,
+      user: {
+        id: row.user_id,
+        name: row.user_name
+      },
+      createdAt: row.created_at
+    }));
+
+    res.json({
+      success: true,
+      data: movements,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

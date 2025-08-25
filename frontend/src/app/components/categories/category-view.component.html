@@ -1,0 +1,117 @@
+<div class="category-view-container">
+  <!-- Background with animated shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Loading category details...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-state">
+      <div class="error-icon">
+        <i class="bi bi-exclamation-triangle"></i>
+      </div>
+      <h4>Error Loading Category</h4>
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" (click)="goBack()">
+        <i class="bi bi-arrow-left me-2"></i>Go Back
+      </button>
+    </div>
+
+    <!-- Category Details -->
+    <div *ngIf="category && !loading" class="category-details">
+      <!-- Header -->
+      <div class="category-header mb-4">
+        <div class="header-card">
+          <div class="header-content">
+            <div class="header-left">
+              <div class="header-icon mb-3">
+                <i class="bi bi-tags"></i>
+              </div>
+              <div>
+                <h1 class="header-title">{{ category.name }}</h1>
+                <p class="header-subtitle">Category Details</p>
+              </div>
+            </div>
+            <div class="header-right">
+              <button class="btn btn-outline-secondary me-3" (click)="goBack()">
+                <i class="bi bi-arrow-left me-2"></i>Back to Categories
+              </button>
+              <button class="btn btn-primary" (click)="editCategory()">
+                <i class="bi bi-pencil me-2"></i>Edit Category
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Information Grid -->
+      <div class="category-info-grid">
+        <!-- Basic Information -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-info-circle me-2"></i>Basic Information
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Name:</span>
+              <span class="info-value">{{ category.name }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">ID:</span>
+              <span class="info-value id-badge">{{ category.id }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Description:</span>
+              <span class="info-value">{{ category.description || 'No description available' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Status:</span>
+              <span class="info-value">
+                <span class="status-badge" [ngClass]="getStatusClass(category)">
+                  <i class="bi" [ngClass]="getStatusIcon(category)"></i>
+                  {{ getStatusText(category) }}
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Statistics & Metadata -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-graph-up me-2"></i>Statistics & Metadata
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Products Count:</span>
+              <span class="info-value products-count">{{ category.productCount || 0 }} products</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Created Date:</span>
+              <span class="info-value">{{ category.createdAt | date:'medium' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Last Updated:</span>
+              <span class="info-value">{{ category.updatedAt | date:'medium' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

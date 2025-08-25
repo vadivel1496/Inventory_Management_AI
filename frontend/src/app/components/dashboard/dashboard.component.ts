@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
   recentActivities: any[] = [];
   lowStockAlerts: any[] = [];
   recentMovements: any[] = [];
+  topProducts: any[] = [];
 
   constructor(private analyticsService: AnalyticsService) {}
 
@@ -80,12 +81,51 @@ export class DashboardComponent implements OnInit {
             }
           }
         }
+        this.loadAdditionalData();
       },
       error: (error) => {
         console.error('Error loading dashboard data:', error);
         this.error = true;
+        this.loading = false;
+      }
+    });
+  }
+
+  loadAdditionalData(): void {
+    // Load top products for Stock Levels
+    this.analyticsService.getTopProducts().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.topProducts = response.data || [];
+        }
       },
-      complete: () => {
+      error: (error) => {
+        console.error('Error loading top products:', error);
+        this.topProducts = [];
+      }
+    });
+
+    // Load recent stock movements for Recent Activities
+    this.analyticsService.getStockMovementsReport().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.recentMovements = response.data || [];
+          // Update recent activities with the new data
+          if (this.recentMovements.length > 0) {
+            this.recentActivities = this.recentMovements.slice(0, 5).map(movement => ({
+              type: 'stock',
+              title: `Stock ${movement.type === 'in' ? 'Added' : 'Removed'}`,
+              description: `${movement.quantity} units of ${movement.product.product?.name || 'Unknown Product'}`,
+              message: `Stock ${movement.type === 'in' ? 'added' : 'removed'}`,
+              timestamp: new Date(movement.createdAt)
+            }));
+          }
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading stock movements:', error);
+        this.recentMovements = [];
         this.loading = false;
       }
     });
@@ -123,5 +163,18 @@ export class DashboardComponent implements OnInit {
       style: 'currency',
       currency: 'USD'
     }).format(amount);
+  }
+
+  // Safe getter methods for template
+  get hasTopProducts() {
+    return this.topProducts.length > 0;
+  }
+
+  get hasRecentMovements() {
+    return this.recentMovements.length > 0;
+  }
+
+  refreshData(): void {
+    this.loadDashboardData();
   }
 } 
