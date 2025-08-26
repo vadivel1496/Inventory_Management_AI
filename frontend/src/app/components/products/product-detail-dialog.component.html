@@ -1,0 +1,108 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      <i class="bi bi-box me-2"></i>Product Details
+    </h2>
+    <button type="button" class="dialog-close-btn" (click)="close()" aria-label="Close">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+  
+  <div class="dialog-content">
+    <div class="row g-1">
+      <div class="col-12">
+        <div class="detail-item">
+          <span class="detail-label">Product Name:</span>
+          <span class="detail-value">{{ data.name }}</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">SKU:</span>
+          <span class="detail-value">{{ data.sku }}</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Category:</span>
+          <span class="detail-value">{{ data.category?.name || 'N/A' }}</span>
+        </div>
+      </div>
+      
+      <div class="col-12" *ngIf="data.description">
+        <div class="detail-item">
+          <span class="detail-label">Description:</span>
+          <span class="detail-value">{{ data.description }}</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Price:</span>
+          <span class="detail-value">${{ formatPrice(data.price) }}</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Quantity:</span>
+          <span class="detail-value">{{ data.quantity }} units</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Low Stock Threshold:</span>
+          <span class="detail-value">{{ data.lowStockThreshold }} units</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Stock Status:</span>
+          <span class="badge" [ngClass]="getStockStatusClass(data)">
+            {{ getStockStatusText(data) }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Supplier ID:</span>
+          <span class="detail-value">{{ data.supplierId }}</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Status:</span>
+          <span class="badge" [ngClass]="getActiveStatusClass(data.isActive)">
+            {{ getActiveStatusText(data.isActive) }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Created:</span>
+          <span class="detail-value">{{ formatDate(data.createdAt) }}</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6" *ngIf="data.updatedAt && data.updatedAt !== data.createdAt">
+        <div class="detail-item">
+          <span class="detail-label">Last Updated:</span>
+          <span class="detail-value">{{ formatDate(data.updatedAt) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="dialog-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">
+      <i class="bi bi-x-circle me-2"></i>Close
+    </button>
+  </div>
+</div>

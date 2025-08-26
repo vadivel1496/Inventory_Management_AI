@@ -23,6 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ProductListComponent } from './product-list.component';
 import { ProductFormComponent } from './product-form.component';
 import { ProductViewComponent } from './product-view.component';
+import { ProductDetailDialog } from './product-detail-dialog.component';
 
 const routes: Routes = [
   { path: '', component: ProductListComponent },
@@ -35,7 +36,8 @@ const routes: Routes = [
   declarations: [
     ProductListComponent,
     ProductFormComponent,
-    ProductViewComponent
+    ProductViewComponent,
+    ProductDetailDialog
   ],
      imports: [
      CommonModule,

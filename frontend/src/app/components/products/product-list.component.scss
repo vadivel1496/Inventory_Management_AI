@@ -675,3 +675,45 @@
     gap: 0.125rem; /* Reduced from 0.25rem */
   }
 }
+
+/* Product Detail Dialog Styles - Force Centered Popup */
+::ng-deep .product-detail-dialog {
+  .mat-dialog-container {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3) !important;
+    position: relative !important;
+    z-index: 1000 !important;
+    background: white !important;
+  }
+  
+  .mat-dialog-content {
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+  }
+}
+
+/* Dialog Backdrop Styles */
+::ng-deep .cdk-overlay-dark-backdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(2px);
+}
+
+/* Dialog Centering */
+::ng-deep .product-detail-dialog {
+  .mat-dialog-container {
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* Ensure dialog is perfectly centered */
+::ng-deep .cdk-overlay-pane.product-detail-dialog {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 10000 !important;
+}

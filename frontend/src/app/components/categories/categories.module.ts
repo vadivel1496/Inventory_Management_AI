@@ -16,11 +16,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Components
 import { CategoryListComponent } from './category-list.component';
 import { CategoryFormComponent } from './category-form.component';
 import { CategoryViewComponent } from './category-view.component';
+import { CategoryDetailDialog } from './category-detail-dialog.component';
 
 const routes: Routes = [
   { path: '', component: CategoryListComponent },
@@ -33,7 +35,8 @@ const routes: Routes = [
   declarations: [
     CategoryListComponent,
     CategoryFormComponent,
-    CategoryViewComponent
+    CategoryViewComponent,
+    CategoryDetailDialog
   ],
   imports: [
     CommonModule,
@@ -53,7 +56,8 @@ const routes: Routes = [
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatChipsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
   ]
 })
 export class CategoriesModule { } 

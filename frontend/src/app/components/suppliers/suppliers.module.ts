@@ -16,11 +16,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Components
 import { SupplierListComponent } from './supplier-list.component';
 import { SupplierFormComponent } from './supplier-form.component';
 import { SupplierViewComponent } from './supplier-view.component';
+import { SupplierDetailDialog } from './supplier-detail-dialog.component';
 
 const routes: Routes = [
   { path: '', component: SupplierListComponent },
@@ -33,7 +35,8 @@ const routes: Routes = [
   declarations: [
     SupplierListComponent,
     SupplierFormComponent,
-    SupplierViewComponent
+    SupplierViewComponent,
+    SupplierDetailDialog
   ],
   imports: [
     CommonModule,
@@ -53,7 +56,8 @@ const routes: Routes = [
     MatSelectModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
   ]
 })
 export class SuppliersModule { } 

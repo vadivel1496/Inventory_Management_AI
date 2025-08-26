@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { SupplierService } from '../../services/supplier.service';
 import { Supplier, SupplierListResponse } from '../../models/supplier.model';
 import { ApiResponse } from '../../models/user.model';
+import { SupplierDetailDialog } from './supplier-detail-dialog.component';
 
 @Component({
   selector: 'app-supplier-list',
@@ -27,7 +29,8 @@ export class SupplierListComponent implements OnInit {
 
   constructor(
     private supplierService: SupplierService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -134,7 +137,35 @@ export class SupplierListComponent implements OnInit {
   }
 
   viewSupplier(supplier: Supplier): void {
-    this.router.navigate(['/suppliers/view', supplier.id]);
+    const dialogRef = this.dialog.open(SupplierDetailDialog, {
+      width: '600px',
+      maxWidth: '90vw',
+      maxHeight: '95vh',
+      data: supplier,
+      panelClass: 'supplier-detail-dialog',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: true,
+      autoFocus: true,
+      restoreFocus: true,
+      closeOnNavigation: true
+    });
+
+    // Block body scrolling when dialog opens
+    dialogRef.afterOpened().subscribe(() => {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Restore body scrolling when dialog closes
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    });
   }
 
   deleteSupplier(supplier: Supplier): void {

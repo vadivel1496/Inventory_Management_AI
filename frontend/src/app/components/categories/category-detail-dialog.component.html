@@ -1,0 +1,65 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      <i class="bi bi-tags me-2"></i>Category Details
+    </h2>
+    <button type="button" class="dialog-close-btn" (click)="close()" aria-label="Close">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+  
+  <div class="dialog-content">
+    <div class="row g-1">
+      <div class="col-12">
+        <div class="detail-item">
+          <span class="detail-label">Category Name:</span>
+          <span class="detail-value">{{ data.name }}</span>
+        </div>
+      </div>
+      
+      <div class="col-12" *ngIf="data.description">
+        <div class="detail-item">
+          <span class="detail-label">Description:</span>
+          <span class="detail-value">{{ data.description }}</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Status:</span>
+          <span class="badge" [ngClass]="getStatusClass(data.status)">
+            <i class="bi" [ngClass]="getStatusIcon(data.status)"></i>
+            {{ getStatusText(data.status) }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Product Count:</span>
+          <span class="detail-value">{{ data.productCount || 0 }} products</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="detail-item">
+          <span class="detail-label">Created:</span>
+          <span class="detail-value">{{ formatDate(data.createdAt) }}</span>
+        </div>
+      </div>
+      
+      <div class="col-md-6" *ngIf="data.updatedAt && data.updatedAt !== data.createdAt">
+        <div class="detail-item">
+          <span class="detail-label">Last Updated:</span>
+          <span class="detail-value">{{ formatDate(data.updatedAt) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="dialog-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">
+      <i class="bi bi-x-circle me-2"></i>Close
+    </button>
+  </div>
+</div>

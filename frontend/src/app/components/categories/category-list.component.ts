@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/product.model';
 import { ApiResponse } from '../../models/user.model';
+import { CategoryDetailDialog } from './category-detail-dialog.component';
 
 @Component({
   selector: 'app-category-list',
@@ -26,7 +28,8 @@ export class CategoryListComponent implements OnInit {
 
   constructor(
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -114,7 +117,35 @@ export class CategoryListComponent implements OnInit {
   }
 
   viewCategory(category: Category): void {
-    this.router.navigate(['/categories/view', category.id]);
+    const dialogRef = this.dialog.open(CategoryDetailDialog, {
+      width: '600px',
+      maxWidth: '90vw',
+      maxHeight: '95vh',
+      data: category,
+      panelClass: 'category-detail-dialog',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: true,
+      autoFocus: true,
+      restoreFocus: true,
+      closeOnNavigation: true
+    });
+
+    // Block body scrolling when dialog opens
+    dialogRef.afterOpened().subscribe(() => {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Restore body scrolling when dialog closes
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    });
   }
 
   deleteCategory(category: Category): void {

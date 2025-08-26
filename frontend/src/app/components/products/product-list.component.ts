@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../services/category.service';
 import { Product, Category } from '../../models/product.model';
 import { ApiResponse } from '../../models/user.model';
 import { ProductListResponse } from '../../models/product.model';
+import { ProductDetailDialog } from './product-detail-dialog.component';
 
 @Component({
   selector: 'app-product-list',
@@ -32,7 +34,8 @@ export class ProductListComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -147,7 +150,35 @@ export class ProductListComponent implements OnInit {
   }
 
   viewProduct(product: Product): void {
-    this.router.navigate(['/products/view', product.id]);
+    const dialogRef = this.dialog.open(ProductDetailDialog, {
+      width: '600px',
+      maxWidth: '90vw',
+      maxHeight: '100vh',
+      data: product,
+      panelClass: 'product-detail-dialog',
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: true,
+      autoFocus: true,
+      restoreFocus: true,
+      closeOnNavigation: true
+    });
+
+    // Block body scrolling when dialog opens
+    dialogRef.afterOpened().subscribe(() => {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Restore body scrolling when dialog closes
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    });
   }
 
   applyFilters(): void {
