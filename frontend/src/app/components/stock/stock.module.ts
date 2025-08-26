@@ -13,7 +13,8 @@ import { StockMovementDetailDialog } from './stock-movement-detail.component';
 
 const routes: Routes = [
   { path: '', component: StockListComponent },
-  { path: 'new', component: StockFormComponent }
+  { path: 'new', component: StockFormComponent },
+  { path: 'edit/:id', component: StockFormComponent }
 ];
 
 @NgModule({

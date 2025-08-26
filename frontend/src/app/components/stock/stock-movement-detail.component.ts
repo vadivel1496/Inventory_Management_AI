@@ -87,9 +87,9 @@ import { StockMovement } from '../../models/stock.model';
     }
     
     .dialog-header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg,#667eea,#764ba2);
       color: white;
-      padding: 1.5rem;
+      padding: .7rem; /* Reduced from 1.5rem */
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -98,9 +98,17 @@ import { StockMovement } from '../../models/stock.model';
     
     .dialog-title {
       color: white;
-      font-weight: 600;
-      font-size: 1.25rem;
+      font-weight: 700;
+      font-size: 1.1rem; /* Increased from 1.25rem for better fit */
       margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .dialog-title i {
+      font-size: 1.2rem;
+      opacity: 0.9;
     }
     
     .dialog-close-btn {
@@ -124,7 +132,7 @@ import { StockMovement } from '../../models/stock.model';
     }
     
     .dialog-content {
-      padding: 1.5rem;
+      padding: 1rem; /* Reduced from 1.5rem */
       background: white;
     }
     
@@ -132,29 +140,35 @@ import { StockMovement } from '../../models/stock.model';
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.75rem;
+      padding: 0.75rem; /* Reduced from 1rem */
       background: #f8f9fa;
       border-radius: 8px;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.5rem; /* Reduced from 0.75rem */
+      border: 1px solid #e9ecef;
     }
     
     .detail-label {
       color: #6c757d;
       font-weight: 600;
-      font-size: 0.875rem;
+      font-size: 0.75rem; /* Increased from 0.875rem for better readability */
+      min-width: 100px;
     }
     
     .detail-value {
       font-weight: 600;
       color: #212529;
+      font-size: 0.75rem; /* Added font size for consistency */
+      text-align: left;
+      flex: 1;
     }
     
     .badge {
       padding: 0.5rem 1rem;
-      font-size: 0.75rem;
+      font-size: 0.7rem; /* Increased from 0.75rem for better readability */
       font-weight: 600;
       text-transform: uppercase;
       border-radius: 20px;
+      letter-spacing: 0.5px;
     }
     
     .badge-success {
@@ -168,7 +182,7 @@ import { StockMovement } from '../../models/stock.model';
     }
     
     .dialog-footer {
-      padding: 1rem 1.5rem;
+      padding: 0.75rem 1rem; /* Reduced from 1rem 1.5rem */
       background: #f8f9fa;
       border-top: 1px solid #dee2e6;
       display: flex;
@@ -176,9 +190,10 @@ import { StockMovement } from '../../models/stock.model';
     }
     
     .btn {
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 0.5rem;
       border-radius: 6px;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 0.7rem; /* Increased from 0.5rem for better readability */
       transition: all 0.3s ease;
     }
     

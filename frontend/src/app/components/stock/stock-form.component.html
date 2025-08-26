@@ -17,8 +17,8 @@
               <i class="bi bi-box-arrow-in-down"></i>
             </div>
             <div>
-              <h1 class="header-title">Add Stock Movement</h1>
-              <p class="header-subtitle">Record new stock movements for inventory tracking</p>
+              <h1 class="header-title">{{ isEditMode ? 'Edit Stock Movement' : 'Add Stock Movement' }}</h1>
+              <p class="header-subtitle">{{ isEditMode ? 'Update existing stock movement details' : 'Record new stock movements for inventory tracking' }}</p>
             </div>
           </div>
           <div class="header-right">
@@ -32,7 +32,7 @@
 
     <div class="row">
       <!-- Form Section -->
-      <div class="col-lg-8">
+      <div class="col-lg-12">
         <div class="form-card">
           <div class="card-body">
             <div *ngIf="productsLoading" class="loading-state">
@@ -169,7 +169,7 @@
                   [disabled]="stockForm.invalid || loading">
                   <span class="spinner-border spinner-border-sm me-2" *ngIf="loading" role="status" aria-hidden="true"></span>
                   <i class="bi bi-check-circle me-2" *ngIf="!loading"></i>
-                  {{ loading ? 'Creating...' : 'Create Movement' }}
+                  {{ loading ? (isEditMode ? 'Updating...' : 'Creating...') : (isEditMode ? 'Update Movement' : 'Create Movement') }}
                 </button>
               </div>
             </form>

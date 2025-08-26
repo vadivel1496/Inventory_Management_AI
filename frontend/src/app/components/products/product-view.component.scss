@@ -1,7 +1,7 @@
 /* Product View Container - Enhanced */
 .product-view-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 50%, #3b82f6 100%); /* Updated to match new design */
+  background: linear-gradient(135deg,#667eea,#764ba2);
   position: relative;
   overflow: hidden;
   padding: 1rem; /* Reduced from 2rem to match Products form */
@@ -158,9 +158,9 @@
 }
 
 .header-subtitle {
-  font-size: 0.7rem; /* Reduced from 1.4rem to match Products form */
+  font-size: 0.8rem; /* Increased from 0.7rem for better readability */
   color: #6b7280;
-  margin: 0.5rem 0 0 0; /* Reduced from 1rem to match Products form */
+  margin: 0.5rem 0 0 0;
   font-weight: 500;
   line-height: 1.5;
 }
@@ -170,16 +170,24 @@
   gap: 0.5rem; /* Reduced from 1rem to match Products form */
 }
 
-.btn {
-  padding: 0.625rem 1.25rem; /* Reduced from 1rem 2rem to match Products form */
-  border-radius: 8px; /* Reduced from 12px to match Products form */
-  font-weight: 700; /* Increased from 600 to match Products form */
-  font-size: 0.55rem; /* Reduced from 1rem to match Products form */
+.header-right .btn {
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.65rem; /* Increased from 0.55rem for better readability */
   transition: all 0.3s ease;
-  border: 1px solid transparent; /* Reduced from 2px to match Products form */
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 7.5px 20px rgba(139, 92, 246, 0.3);
   
   &:hover {
-    transform: translateY(-1.5px); /* Reduced from -2px to match Products form */
+    transform: translateY(-1.5px);
+    box-shadow: 0 12.5px 30px rgba(139, 92, 246, 0.4);
+  }
+  
+  i {
+    font-size: 0.7rem; /* Increased from 0.6rem for better visibility */
   }
 }
 
@@ -237,17 +245,17 @@
 }
 
 .card-title {
-  font-size: 0.75rem; /* Reduced from 1.5rem to match Products form */
+  font-size: 0.9rem; /* Increased from 0.75rem for better readability */
   font-weight: 700;
   color: #1e1b4b;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Reduced from 1rem to match Products form */
+  gap: 0.5rem;
   
   i {
     color: #8b5cf6;
-    font-size: 0.9rem; /* Reduced from 1.8rem to match Products form */
+    font-size: 1.1rem; /* Increased from 0.9rem for better visibility */
   }
 }
 
@@ -265,15 +273,15 @@
 
 .info-label {
   font-weight: 600;
-  color: #6b7280;
-  font-size: 0.5rem; /* Reduced from 1rem to match Products form */
+  color: #1e1b4b;
+  font-size: 0.65rem; /* Increased from 0.5rem for better readability */
   min-width: 120px; /* Reduced from 150px to match Products form */
 }
 
 .info-value {
+  color: #374151;
+  font-size: 0.65rem; /* Increased from 0.5rem for better readability */
   font-weight: 500;
-  color: #1e1b4b;
-  font-size: 0.5rem; /* Reduced from 1rem to match Products form */
   text-align: right;
   flex: 1;
   margin-left: 0.5rem; /* Reduced from 1rem to match Products form */
@@ -283,33 +291,35 @@
 .sku-badge {
   background: rgba(139, 92, 246, 0.1);
   color: #8b5cf6;
-  padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem to match Products form */
-  border-radius: 10px; /* Reduced from 20px to match Products form */
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 0.425rem; /* Reduced from 0.85rem to match Products form */
+  font-size: 0.65rem; /* Increased from 0.425rem for better readability */
   font-family: 'Courier New', monospace;
 }
 
 .category-badge {
   background: rgba(34, 197, 94, 0.1);
   color: #059669;
-  padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem to match Products form */
-  border-radius: 10px; /* Reduced from 20px to match Products form */
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 0.425rem; /* Reduced from 0.85rem to match Products form */
+  font-size: 0.55rem; /* Increased from 0.425rem for better readability */
   display: inline-flex;
   align-items: center;
 }
 
 .price-value {
-  font-size: 0.65rem; /* Reduced from 1.3rem to match Products form */
+  font-size: 0.7rem; /* Increased from 0.65rem for better readability */
   font-weight: 700;
   color: #059669;
 }
 
 .stock-quantity {
-  font-size: 0.6rem; /* Reduced from 1.2rem to match Products form */
+  font-size: 0.75rem; /* Increased from 0.6rem for better readability */
   font-weight: 700;
+  display: block;
+  margin-bottom: 0.125rem;
   
   &.in-stock {
     color: #059669;
@@ -325,26 +335,21 @@
 }
 
 .status-badge {
-  padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem to match Products form */
-  border-radius: 10px; /* Reduced from 20px to match Products form */
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 0.425rem; /* Reduced from 0.85rem to match Products form */
+  font-size: 0.55rem; /* Increased from 0.425rem for better readability */
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem; /* Reduced from 0.5rem to match Products form */
+  gap: 0.25rem;
   
-  &.bg-success {
+  &.active {
     background: rgba(34, 197, 94, 0.1);
     color: #059669;
   }
   
-  &.bg-warning {
-    background: rgba(217, 119, 6, 0.1);
-    color: #d97706;
-  }
-  
-  &.bg-danger {
-    background: rgba(220, 38, 38, 0.1);
+  &.inactive {
+    background: rgba(239, 68, 68, 0.1);
     color: #dc2626;
   }
 }
@@ -373,11 +378,11 @@
   }
   
   .header-title {
-    font-size: 1.25rem; /* Reduced from 2.5rem to match Products form */
+    font-size: 1.5rem; /* Increased from 1.25rem for better readability */
   }
   
   .header-subtitle {
-    font-size: 0.6rem; /* Reduced from 1.2rem to match Products form */
+    font-size: 0.7rem; /* Increased from 0.6rem for better readability */
   }
   
   .header-right {

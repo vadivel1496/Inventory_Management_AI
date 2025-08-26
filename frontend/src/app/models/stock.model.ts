@@ -15,7 +15,6 @@ export interface StockMovement {
   };
   previousStock: number;
   newStock: number;
-  date: string;
   notes?: string;
   createdAt: string;
 }

@@ -131,7 +131,6 @@
                 <th>Contact Info</th>
                 <th>Role</th>
                 <th>Status</th>
-                <th>Last Login</th>
                 <th>Created Date</th>
                 <th class="text-center">Actions</th>
               </tr>
@@ -168,11 +167,6 @@
                   </span>
                 </td>
                 <td>
-                  <div class="last-login-info">
-                    <span class="last-login-value">{{user.lastLogin | date:'mediumDate' || 'Never'}}</span>
-                  </div>
-                </td>
-                <td>
                   <div class="date-info">
                     <span class="date-value">{{user.createdAt | date:'mediumDate'}}</span>
                   </div>
@@ -182,8 +176,12 @@
                     <button class="btn btn-sm btn-outline-primary" (click)="editUser(user)" title="Edit">
                       <i class="bi bi-pencil"></i>
                     </button>
-                    <button class="btn btn-sm btn-outline-info" (click)="viewUser(user)" title="View">
-                      <i class="bi bi-eye"></i>
+                    <button 
+                      class="btn btn-sm" 
+                      [ngClass]="user.status === 'active' ? 'btn-outline-warning' : 'btn-outline-success'"
+                      (click)="toggleUserStatus(user)" 
+                      [title]="user.status === 'active' ? 'Deactivate User' : 'Activate User'">
+                      <i class="bi" [ngClass]="user.status === 'active' ? 'bi-person-x' : 'bi-person-check'"></i>
                     </button>
                     <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user)" title="Delete">
                       <i class="bi bi-trash"></i>

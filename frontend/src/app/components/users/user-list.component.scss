@@ -1,7 +1,7 @@
 /* Users Container - Enhanced */
 .users-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 50%, #3b82f6 100%); /* Updated to match new design */
+  background: linear-gradient(135deg,#667eea,#764ba2);
   position: relative;
   overflow: hidden;
   padding: 1rem; /* Reduced from 2rem */
@@ -98,14 +98,14 @@
   font-weight: 800;
   color: #1e1b4b;
   margin: 0;
-  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .header-subtitle {
-  font-size: 0.625rem; /* Reduced from 1.25rem */
+  font-size: 0.7rem; /* Increased from 0.625rem for better readability */
   color: #6b7280;
   margin: 0.25rem 0 0 0; /* Reduced from 0.5rem */
   font-weight: 500;
@@ -115,7 +115,7 @@
   padding: 0.5rem 1rem; /* Reduced from 1rem 2rem */
   border-radius: 8px; /* Reduced from 16px */
   font-weight: 600;
-  font-size: 0.55rem; /* Reduced from 1.1rem */
+  font-size: 0.65rem; /* Increased from 0.55rem for better readability */
   box-shadow: 0 4px 12.5px rgba(139, 92, 246, 0.3); /* Reduced from 8px 25px */
   transition: all 0.3s ease;
   
@@ -142,19 +142,23 @@
   border-bottom: 1px solid rgba(139, 92, 246, 0.1);
   padding: 0.75rem 1rem; /* Reduced from 1.5rem 2rem */
   border-radius: 10px 10px 0 0; /* Reduced from 20px 20px 0 0 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-title {
-  font-size: 0.75rem; /* Reduced from 1.5rem */
+  font-size: 0.9rem; /* Increased from 0.75rem for better readability */
   font-weight: 700;
   color: #1e1b4b;
   margin: 0;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   
   i {
     color: #8b5cf6;
-    margin-right: 0.375rem; /* Reduced from 0.75rem */
+    margin-right: 0.375rem;
   }
 }
 
@@ -180,14 +184,14 @@
   font-weight: 600;
   color: #374151;
   margin-bottom: 0.125rem; /* Reduced from 0.25rem */
-  font-size: 0.5rem; /* Reduced from 1rem */
+  font-size: 0.7rem; /* Increased from 0.5rem for better readability */
 }
 
 .form-control, .form-select {
   border-radius: 6px; /* Reduced from 12px */
   border: 1px solid #e5e7eb; /* Reduced from 2px */
   padding: 0.375rem 0.5rem; /* Reduced from 0.75rem 1rem */
-  font-size: 0.5rem; /* Reduced from 1rem */
+  font-size: 0.7rem; /* Increased from 0.5rem for better readability */
   transition: all 0.3s ease;
   
   &:focus {
@@ -198,11 +202,12 @@
 }
 
 .input-group-text {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb; /* Reduced from 2px */
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2); /* Reduced from 2px */
   border-right: none;
-  color: #6b7280;
+  color: #8b5cf6;
   border-radius: 6px 0 0 6px; /* Reduced from 12px */
+  padding: 0.4375rem 0.5rem; /* Reduced from 0.875rem 1rem */
 }
 
 .input-group .form-control {
@@ -225,7 +230,7 @@
   border-radius: 6px; /* Reduced from 12px */
   font-weight: 600;
   transition: all 0.3s ease;
-  font-size: 0.5rem; /* Reduced from 1rem */
+  font-size: 0.7rem; /* Increased from 0.5rem for better readability */
   
   &.btn-primary {
     background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
@@ -273,7 +278,7 @@
   color: white;
   padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem */
   border-radius: 10px; /* Reduced from 20px */
-  font-size: 0.4375rem; /* Reduced from 0.875rem */
+  font-size: 0.65rem; /* Increased from 0.4375rem for better readability */
   font-weight: 600;
 }
 
@@ -287,7 +292,7 @@
     padding: 0.625rem 0.5rem; /* Reduced from 1.25rem 1rem */
     font-weight: 700;
     color: #1e1b4b;
-    font-size: 0.475rem; /* Reduced from 0.95rem */
+    font-size: 0.65rem; /* Increased from 0.475rem for better readability */
     text-transform: uppercase;
     letter-spacing: 0.25px; /* Reduced from 0.5px */
   }
@@ -327,7 +332,7 @@
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 0.625rem; /* Reduced from 1.25rem */
+    font-size: 0.65rem; /* Reduced from 1.25rem */
     flex-shrink: 0;
   }
   
@@ -338,12 +343,12 @@
   .user-name {
     font-weight: 700;
     color: #1e1b4b;
-    font-size: 0.55rem; /* Reduced from 1.1rem */
+    font-size: 0.7rem; /* Reduced from 1.1rem */
     margin-bottom: 0.125rem; /* Reduced from 0.25rem */
   }
   
   .user-email {
-    font-size: 0.4375rem; /* Reduced from 0.875rem */
+    font-size: 0.65rem; /* Reduced from 0.875rem */
     color: #6b7280;
   }
   
@@ -351,22 +356,22 @@
     .contact-email {
       color: #4b5563;
       font-weight: 600;
-      font-size: 0.5rem; /* Reduced from 1rem */
+      font-size: 0.6rem; /* Reduced from 1rem */
       margin-bottom: 0.125rem; /* Reduced from 0.25rem */
     }
     
     .contact-role {
       color: #6b7280;
-      font-size: 0.4375rem; /* Reduced from 0.875rem */
+      font-size: 0.65rem; /* Reduced from 0.875rem */
       text-transform: capitalize;
     }
   }
   
   .role-badge {
-    padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem */
+    padding: 0.25rem 0.7rem; /* Reduced from 0.5rem 1rem */
     border-radius: 10px; /* Reduced from 20px */
     font-weight: 600;
-    font-size: 0.4375rem; /* Reduced from 0.875rem */
+    font-size: 0.6rem; /* Reduced from 0.875rem */
     display: inline-flex;
     align-items: center;
     gap: 0.25rem; /* Reduced from 0.5rem */
@@ -386,7 +391,7 @@
     padding: 0.25rem 0.5rem; /* Reduced from 0.5rem 1rem */
     border-radius: 10px; /* Reduced from 20px */
     font-weight: 600;
-    font-size: 0.4375rem; /* Reduced from 0.875rem */
+    font-size: 0.6rem; /* Reduced from 0.875rem */
     display: inline-flex;
     align-items: center;
     gap: 0.25rem; /* Reduced from 0.5rem */
@@ -406,7 +411,7 @@
     .last-login-value {
       color: #6b7280;
       font-weight: 500;
-      font-size: 0.5rem; /* Reduced from 1rem */
+      font-size: 0.7rem; /* Reduced from 1rem */
     }
   }
   
@@ -414,7 +419,7 @@
     .date-value {
       color: #6b7280;
       font-weight: 500;
-      font-size: 0.5rem; /* Reduced from 1rem */
+      font-size: 0.65rem; /* Reduced from 1rem */
     }
   }
   
@@ -432,7 +437,7 @@
       justify-content: center;
       border-radius: 4px; /* Reduced from 8px */
       transition: all 0.3s ease;
-      font-size: 0.5rem; /* Reduced from 1rem */
+      font-size: 0.65rem; /* Reduced from 1rem */
       
       &:hover {
         transform: scale(1.1);

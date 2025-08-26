@@ -49,7 +49,7 @@ async function seedDatabase() {
         category_id: categoryIds[0] || 1,
         price: 999.99,
         quantity: 25,
-        supplier_info: 'TechCorp Inc.'
+        supplier_id: 1 // Tech Solutions Inc.
       },
       {
         name: 'Wireless Mouse',
@@ -58,7 +58,7 @@ async function seedDatabase() {
         category_id: categoryIds[0] || 1,
         price: 29.99,
         quantity: 150,
-        supplier_info: 'TechCorp Inc.'
+        supplier_id: 1 // Tech Solutions Inc.
       },
       {
         name: 'Cotton T-Shirt',
@@ -67,7 +67,7 @@ async function seedDatabase() {
         category_id: categoryIds[1] || 2,
         price: 19.99,
         quantity: 200,
-        supplier_info: 'Fashion World Ltd.'
+        supplier_id: 2 // Fashion Forward Ltd.
       },
       {
         name: 'Programming Book',
@@ -76,7 +76,7 @@ async function seedDatabase() {
         category_id: categoryIds[2] || 3,
         price: 49.99,
         quantity: 75,
-        supplier_info: 'Book Publishers Co.'
+        supplier_id: 3 // Book World Publishers
       },
       {
         name: 'Garden Hose',
@@ -85,7 +85,7 @@ async function seedDatabase() {
         category_id: categoryIds[3] || 4,
         price: 39.99,
         quantity: 50,
-        supplier_info: 'Home & Garden Supply'
+        supplier_id: 4 // Home & Garden Supply Co.
       },
       {
         name: 'Basketball',
@@ -94,7 +94,7 @@ async function seedDatabase() {
         category_id: categoryIds[4] || 5,
         price: 24.99,
         quantity: 100,
-        supplier_info: 'Sports Equipment Co.'
+        supplier_id: 2 // Fashion Forward Ltd. (sports apparel)
       },
       {
         name: 'Smartphone',
@@ -103,7 +103,7 @@ async function seedDatabase() {
         category_id: categoryIds[0] || 1,
         price: 799.99,
         quantity: 30,
-        supplier_info: 'MobileTech Inc.'
+        supplier_id: 1 // Tech Solutions Inc.
       },
       {
         name: 'Running Shoes',
@@ -112,16 +112,16 @@ async function seedDatabase() {
         category_id: categoryIds[4] || 5,
         price: 89.99,
         quantity: 80,
-        supplier_info: 'Athletic Gear Ltd.'
+        supplier_id: 2 // Fashion Forward Ltd.
       }
     ];
 
     for (const product of products) {
       await pool.query(
-        `INSERT INTO products (name, description, sku, category_id, price, quantity, supplier_info) 
+        `INSERT INTO products (name, description, sku, category_id, price, quantity, supplier_id) 
          VALUES ($1, $2, $3, $4, $5, $6, $7) 
          ON CONFLICT (sku) DO NOTHING`,
-        [product.name, product.description, product.sku, product.category_id, product.price, product.quantity, product.supplier_info]
+        [product.name, product.description, product.sku, product.category_id, product.price, product.quantity, product.supplier_id]
       );
       logger.info(`Created product: ${product.name}`);
     }

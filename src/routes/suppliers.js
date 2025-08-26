@@ -28,19 +28,19 @@ router.get('/', async (req, res) => {
     const { status = 'active' } = req.query;
     
     let query = `
-      SELECT id, name, email, phone, address, contact_person, status, created_at, updated_at
-      FROM suppliers
+      SELECT s.id, s.name, s.email, s.phone, s.address, s.contact_person, s.status, s.created_at, s.updated_at
+      FROM suppliers s
       WHERE 1=1
     `;
     
     const queryParams = [];
     
     if (status && status !== 'all') {
-      query += ` AND status = $${queryParams.length + 1}`;
+      query += ` AND s.status = $${queryParams.length + 1}`;
       queryParams.push(status);
     }
     
-    query += ` ORDER BY name ASC`;
+    query += ` ORDER BY s.name ASC`;
     
     const result = await pool.query(query, queryParams);
     

@@ -81,19 +81,19 @@ export class StockListComponent implements OnInit {
 
     if (this.startDate) {
       const start = new Date(this.startDate);
-      filtered = filtered.filter(movement => new Date(movement.date) >= start);
+      filtered = filtered.filter(movement => new Date(movement.createdAt) >= start);
     }
 
     if (this.endDate) {
       const end = new Date(this.endDate);
-      filtered = filtered.filter(movement => new Date(movement.date) <= end);
+      filtered = filtered.filter(movement => new Date(movement.createdAt) <= end);
     }
 
     // Sort movements
     filtered.sort((a, b) => {
       switch (this.sortBy) {
         case 'date':
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         case 'product':
           return (a.product?.name || '').localeCompare(b.product?.name || '');
         case 'quantity':
@@ -141,36 +141,41 @@ export class StockListComponent implements OnInit {
   }
 
   viewMovement(movement: StockMovement): void {
-    // Open the stock movement detail dialog with proper positioning
     const dialogRef = this.dialog.open(StockMovementDetailDialog, {
-      width: '500px',
+      width: '600px',
       maxWidth: '90vw',
-      height: 'auto',
-      maxHeight: '90vh',
+      maxHeight: '95vh',
+      data: movement,
       panelClass: 'stock-movement-dialog',
-      disableClose: false,
-      autoFocus: false,
-      data: movement
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop',
+      disableClose: true,
+      autoFocus: true,
+      restoreFocus: true,
+      closeOnNavigation: true
+    });
+
+    // Block body scrolling when dialog opens
+    dialogRef.afterOpened().subscribe(() => {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 'refresh') {
-        this.loadMovements();
-      }
+      // Restore body scrolling when dialog closes
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
     });
   }
 
   deleteMovement(movement: StockMovement): void {
-    if (confirm(`Are you sure you want to delete this stock movement?`)) {
-      this.stockService.deleteStockMovement(movement.id).subscribe({
-        next: () => {
-          this.loadMovements();
-        },
-        error: (error) => {
-          console.error('Error deleting stock movement:', error);
-          alert('Failed to delete stock movement');
-        }
-      });
+    if (confirm('Are you sure you want to delete this stock movement?')) {
+      // Implement delete logic here
+      console.log('Deleting movement:', movement.id);
     }
   }
 

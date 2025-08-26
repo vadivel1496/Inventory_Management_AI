@@ -1,0 +1,52 @@
+/* Global Material Dialog Styles */
+.cdk-overlay-container {
+  z-index: 1000 !important;
+}
+
+.cdk-overlay-pane {
+  z-index: 1000 !important;
+}
+
+.mat-dialog-container {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3) !important;
+}
+
+/* Stock Movement Dialog Specific Styles */
+.stock-movement-dialog .mat-dialog-container {
+  background: white !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.stock-movement-backdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* Force dialog centering */
+.cdk-overlay-pane.stock-movement-dialog {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 1000 !important;
+}
+
+/* Ensure backdrop covers the entire screen */
+.cdk-overlay-backdrop.stock-movement-backdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+  z-index: 999 !important;
+}
+
+/* Override any conflicting styles */
+.mat-dialog-overlay {
+  z-index: 1000 !important;
+}
+
+/* Ensure dialog appears above everything */
+.stock-movement-dialog {
+  z-index: 1001 !important;
+} 

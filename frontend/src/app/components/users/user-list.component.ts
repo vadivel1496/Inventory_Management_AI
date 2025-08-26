@@ -142,6 +142,30 @@ export class UserListComponent implements OnInit {
     }
   }
 
+  toggleUserStatus(user: User): void {
+    const newStatus = user.status === 'active' ? 'inactive' : 'active';
+    const action = newStatus === 'active' ? 'activate' : 'deactivate';
+    
+    if (confirm(`Are you sure you want to ${action} ${user.name}?`)) {
+      this.authService.toggleUserStatus(user.id, newStatus).subscribe({
+        next: (response) => {
+          if (response.success) {
+            // Update the user status locally
+            user.status = newStatus;
+            // Show success message
+            alert(`User ${user.name} has been ${action}d successfully`);
+          } else {
+            alert(`Failed to ${action} user: ${response.message || 'Unknown error'}`);
+          }
+        },
+        error: (error) => {
+          console.error(`Error ${action}ing user:`, error);
+          alert(`Failed to ${action} user`);
+        }
+      });
+    }
+  }
+
   // Role helper methods
   getRoleClass(user: User): string {
     switch (user.role) {

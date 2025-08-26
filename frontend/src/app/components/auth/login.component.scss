@@ -93,7 +93,7 @@
 .card-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 2rem 2rem 1.5rem;
+  padding: 1.2rem 1.2rem 1rem;
   border: none;
 }
 
@@ -103,8 +103,8 @@
 }
 
 .logo-icon {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   display: flex;
@@ -120,14 +120,14 @@
 }
 
 .login-title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .login-subtitle {
-  font-size: 1rem;
+  font-size: .8rem;
   opacity: 0.9;
   margin-bottom: 0;
   font-weight: 300;
@@ -181,6 +181,7 @@
   color: #6b7280;
   border-radius: 12px 0 0 12px;
   padding: 0.75rem 1rem;
+  font-size: .8rem;
 }
 
 .input-group .form-control {
@@ -231,13 +232,14 @@
   color: #6b7280;
   font-weight: 500;
   cursor: pointer;
+  font-size: 0.8rem;
 }
 
 .forgot-password {
   color: #667eea;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   transition: color 0.3s ease;
 }
 
@@ -251,8 +253,8 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   border-radius: 12px;
-  padding: 0.875rem;
-  font-size: 1rem;
+  padding: 0.6rem;
+  font-size: .8rem;
   font-weight: 600;
   transition: all 0.3s ease;
   text-transform: uppercase;
@@ -432,7 +434,7 @@
     font-weight: 600;
     color: #4a5568;
     margin-bottom: 0.5rem;
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     display: flex;
     align-items: center;
     
@@ -447,7 +449,7 @@
     border: 2px solid #e2e8f0;
     border-radius: 12px;
     padding: 0.75rem 1rem;
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     transition: all 0.3s ease;
     background: rgba(255, 255, 255, 0.9);
     

@@ -1,7 +1,7 @@
 /* Supplier View Container - Enhanced */
 .supplier-view-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 50%, #3b82f6 100%);
+  background: linear-gradient(135deg,#667eea,#764ba2);
   position: relative;
   overflow: hidden;
   padding: 1rem;
@@ -86,10 +86,16 @@
 }
 
 .header-subtitle {
-  font-size: 0.7rem;
+  font-size: 0.8rem; /* Increased from 0.7rem for better readability */
   color: #6b7280;
   margin: 0.5rem 0 0 0;
   font-weight: 500;
+  line-height: 1.5;
+}
+
+.header-right {
+  display: flex;
+  gap: 0.5rem;
 }
 
 /* Supplier Information Grid */
@@ -118,18 +124,18 @@
 }
 
 .card-title {
-  font-size: 0.75rem;
+  font-size: 0.9rem; /* Increased from 0.75rem for better readability */
   font-weight: 700;
   color: #1e1b4b;
   margin: 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-.card-title i {
-  color: #8b5cf6;
-  font-size: 0.9rem;
+  
+  i {
+    color: #8b5cf6;
+    font-size: 1.1rem; /* Increased from 0.9rem for better visibility */
+  }
 }
 
 .info-row {
@@ -143,14 +149,14 @@
 .info-label {
   font-weight: 600;
   color: #6b7280;
-  font-size: 0.5rem;
+  font-size: 0.65rem; /* Increased from 0.5rem for better readability */
   min-width: 120px;
 }
 
 .info-value {
   font-weight: 500;
   color: #1e1b4b;
-  font-size: 0.5rem;
+  font-size: 0.65rem; /* Increased from 0.5rem for better readability */
   text-align: right;
   flex: 1;
   margin-left: 0.5rem;
@@ -163,7 +169,7 @@
   padding: 0.25rem 0.5rem;
   border-radius: 10px;
   font-weight: 600;
-  font-size: 0.425rem;
+  font-size: 0.65rem;
   font-family: 'Courier New', monospace;
 }
 
@@ -171,20 +177,20 @@
   padding: 0.25rem 0.5rem;
   border-radius: 10px;
   font-weight: 600;
-  font-size: 0.425rem;
+  font-size: 0.55rem; /* Increased from 0.425rem for better readability */
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-}
-
-.status-badge.status-active {
-  background: rgba(34, 197, 94, 0.1);
-  color: #059669;
-}
-
-.status-badge.status-inactive {
-  background: rgba(220, 38, 38, 0.1);
-  color: #dc2626;
+  
+  &.active {
+    background: rgba(34, 197, 94, 0.1);
+    color: #059669;
+  }
+  
+  &.inactive {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+  }
 }
 
 /* Button Styles */
@@ -192,9 +198,13 @@
   padding: 0.625rem 1.25rem;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 0.55rem;
+  font-size: 0.65rem; /* Increased from 0.55rem for better readability */
   transition: all 0.3s ease;
   border: 1px solid transparent;
+  
+  &:hover {
+    transform: translateY(-1.5px);
+  }
 }
 
 .btn-primary {

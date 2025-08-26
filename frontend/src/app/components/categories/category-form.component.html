@@ -32,11 +32,6 @@
 
     <!-- Form Card -->
     <div class="form-card">
-      <div class="card-header">
-        <h5 class="card-title">
-          <i class="bi bi-card-text me-2"></i>Category Details
-        </h5>
-      </div>
       <div class="card-body">
         <div *ngIf="loading" class="loading-state">
           <div class="spinner-container">
@@ -49,7 +44,7 @@
 
         <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" *ngIf="!loading" class="category-form">
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
               <div class="form-section">
                 <h5 class="section-title">
                   <i class="bi bi-card-heading me-2"></i>Category Information

@@ -130,7 +130,6 @@
                 <th>Supplier</th>
                 <th>Contact Info</th>
                 <th>Location</th>
-                <th>Products Count</th>
                 <th>Status</th>
                 <th>Created Date</th>
                 <th class="text-center">Actions</th>
@@ -161,12 +160,7 @@
                     <div class="location-contact">{{supplier.contactPerson || 'N/A'}}</div>
                   </div>
                 </td>
-                <td>
-                  <div class="products-count">
-                    <span class="count-badge">N/A</span>
-                    <span class="count-label">PRODUCTS</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge" [ngClass]="getStatusClass(supplier)">
                     <i class="bi" [ngClass]="getStatusIcon(supplier)"></i>
