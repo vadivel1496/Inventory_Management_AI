@@ -11,7 +11,8 @@ const stockMovementSchema = Joi.object({
   quantity: Joi.number().integer().positive().required(),
   type: Joi.string().valid('in', 'out').required(),
   reason: Joi.string().min(2).max(500).required(),
-  reference: Joi.string().max(255).allow('', null)
+  reference: Joi.string().max(255).allow('', null),
+  notes: Joi.string().max(1000).allow('', null)
 });
 
 /**
@@ -76,7 +77,7 @@ router.post('/products/:id', authenticateToken, requireRole(['admin', 'user']), 
       });
     }
 
-    const { quantity, type, reason, reference } = value;
+    const { quantity, type, reason, reference, notes } = value;
 
     // Check if product exists
     const productResult = await pool.query(
@@ -128,9 +129,9 @@ router.post('/products/:id', authenticateToken, requireRole(['admin', 'user']), 
 
       // Record stock movement
       await client.query(`
-        INSERT INTO stock_movements (product_id, quantity, type, reason, reference, user_id)
-        VALUES ($1, $2, $3, $4, $5, $6)
-      `, [id, quantity, type, reason, reference, req.user.id]);
+        INSERT INTO stock_movements (product_id, quantity, type, reason, reference, notes, user_id)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `, [id, quantity, type, reason, reference, notes || '', req.user.id]);
 
       await client.query('COMMIT');
 
@@ -468,6 +469,247 @@ router.get('/products/:id/movements', authenticateToken, async (req, res, next) 
       },
       timestamp: new Date().toISOString()
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @swagger
+ * /stock/movements/{id}:
+ *   get:
+ *     summary: Get a specific stock movement by ID
+ *     tags: [Stock]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Stock movement details
+ *       404:
+ *         description: Stock movement not found
+ */
+router.get('/movements/:id', authenticateToken, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query(`
+      SELECT 
+        sm.*,
+        p.name as product_name,
+        p.sku as product_sku,
+        u.name as user_name
+      FROM stock_movements sm
+      LEFT JOIN products p ON sm.product_id = p.id
+      LEFT JOIN users u ON sm.user_id = u.id
+      WHERE sm.id = $1
+    `, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'MOVEMENT_NOT_FOUND',
+          message: 'Stock movement not found'
+        },
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    const row = result.rows[0];
+    const movement = {
+      id: row.id,
+      product: {
+        id: row.product_id,
+        name: row.product_name,
+        sku: row.product_sku
+      },
+      quantity: row.quantity,
+      type: row.type,
+      reason: row.reason,
+      reference: row.reference,
+      notes: row.notes,
+      user: {
+        id: row.user_id,
+        name: row.user_name
+      },
+      createdAt: row.created_at
+    };
+
+    res.json({
+      success: true,
+      data: movement,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @swagger
+ * /stock/movements/{id}:
+ *   put:
+ *     summary: Update a stock movement
+ *     tags: [Stock]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - quantity
+ *               - type
+ *               - reason
+ *             properties:
+ *               quantity:
+ *                 type: integer
+ *               type:
+ *                 type: string
+ *                 enum: [in, out]
+ *               reason:
+ *                 type: string
+ *               reference:
+ *                 type: string
+ *               notes:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Stock movement updated successfully
+ *       404:
+ *         description: Stock movement not found
+ *       400:
+ *         description: Validation error or insufficient stock
+ */
+router.put('/movements/:id', authenticateToken, requireRole(['admin', 'user']), async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { error, value } = stockMovementSchema.validate(req.body);
+    
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: 'Validation failed',
+          details: error.details.map(detail => ({
+            field: detail.path.join('.'),
+            message: detail.message
+          }))
+        },
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    const { quantity, type, reason, reference } = value;
+    const notes = req.body.notes || '';
+
+    // Get the existing movement
+    const existingMovementResult = await pool.query(
+      'SELECT sm.*, p.quantity as current_quantity FROM stock_movements sm JOIN products p ON sm.product_id = p.id WHERE sm.id = $1',
+      [id]
+    );
+
+    if (existingMovementResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'MOVEMENT_NOT_FOUND',
+          message: 'Stock movement not found'
+        },
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    const existingMovement = existingMovementResult.rows[0];
+    const currentProductQuantity = existingMovement.current_quantity;
+
+    // Calculate what the product quantity would be if we reverse the old movement
+    let quantityAfterReversal;
+    if (existingMovement.type === 'in') {
+      quantityAfterReversal = currentProductQuantity - existingMovement.quantity;
+    } else {
+      quantityAfterReversal = currentProductQuantity + existingMovement.quantity;
+    }
+
+    // Calculate what the new quantity would be with the new movement
+    let finalQuantity;
+    if (type === 'in') {
+      finalQuantity = quantityAfterReversal + quantity;
+    } else {
+      if (quantityAfterReversal < quantity) {
+        return res.status(400).json({
+          success: false,
+          error: {
+            code: 'INSUFFICIENT_STOCK',
+            message: `Insufficient stock. Available after reversal: ${quantityAfterReversal}, Requested: ${quantity}`
+          },
+          timestamp: new Date().toISOString()
+        });
+      }
+      finalQuantity = quantityAfterReversal - quantity;
+    }
+
+    // Start transaction
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+
+      // Update the stock movement
+      await client.query(`
+        UPDATE stock_movements 
+        SET quantity = $1, type = $2, reason = $3, reference = $4, notes = $5, updated_at = CURRENT_TIMESTAMP 
+        WHERE id = $6
+      `, [quantity, type, reason, reference, notes, id]);
+
+      // Update product quantity
+      await client.query(
+        'UPDATE products SET quantity = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2',
+        [finalQuantity, existingMovement.product_id]
+      );
+
+      await client.query('COMMIT');
+
+      logger.info(`Stock movement updated: ID ${id} by user ${req.user.id}`);
+
+      res.json({
+        success: true,
+        data: {
+          movementId: id,
+          productId: existingMovement.product_id,
+          previousQuantity: currentProductQuantity,
+          newQuantity: finalQuantity,
+          movement: {
+            quantity,
+            type,
+            reason,
+            reference,
+            notes
+          }
+        },
+        message: 'Stock movement updated successfully',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
   } catch (error) {
     next(error);
   }

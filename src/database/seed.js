@@ -157,9 +157,9 @@ async function seedDatabase() {
 
         // Create stock movement record
         await pool.query(
-          `INSERT INTO stock_movements (product_id, quantity, type, reason, user_id) 
-           VALUES ($1, $2, $3, $4, (SELECT id FROM users WHERE email = 'admin@inventory.com'))`,
-          [productId, movement.quantity, movement.type, movement.reason]
+          `INSERT INTO stock_movements (product_id, quantity, type, reason, reference, notes, user_id) 
+           VALUES ($1, $2, $3, $4, $5, $6, (SELECT id FROM users WHERE email = 'admin@inventory.com'))`,
+          [productId, movement.quantity, movement.type, movement.reason, '', '']
         );
         
         logger.info(`Created stock movement: ${movement.type} ${movement.quantity} units of ${movement.product_sku}`);

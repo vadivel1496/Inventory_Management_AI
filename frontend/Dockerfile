@@ -27,12 +27,10 @@ COPY --from=build /app/dist/inventory-frontend /usr/share/nginx/html
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Create non-root user for nginx
-RUN addgroup -g 1001 -S nginx && \
-    adduser -S nginx -u 1001 -G nginx
-
-# Change ownership of nginx directories
-RUN chown -R nginx:nginx /var/cache/nginx && \
+# The nginx:alpine image already has nginx user and group
+# Just ensure proper ownership of directories
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /var/log/nginx && \
     chown -R nginx:nginx /etc/nginx/conf.d && \
     touch /var/run/nginx.pid && \
@@ -46,4 +44,4 @@ EXPOSE 80
 
 # Start nginx with dumb-init
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["nginx", "-g", "daemon off;"] 
+CMD ["nginx", "-g", "daemon off;"]

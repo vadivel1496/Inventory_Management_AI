@@ -10,7 +10,7 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit {
   title = 'Inventory AI';
   currentUser: any = null;
-  sidebarOpened = true; // Changed to true to keep sidebar open by default
+  sidebarOpened = true; // Sidebar is always open since toggle button is removed
 
   constructor(
     private router: Router,
@@ -40,9 +40,5 @@ export class AppComponent implements OnInit {
   goToSettings(): void {
     // TODO: Implement settings page navigation
     console.log('Navigate to settings page');
-  }
-
-  toggleSidebar(): void {
-    this.sidebarOpened = !this.sidebarOpened;
   }
 } 

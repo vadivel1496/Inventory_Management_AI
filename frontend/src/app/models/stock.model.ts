@@ -24,6 +24,7 @@ export interface CreateStockMovementRequest {
   type: 'in' | 'out';
   reason: string;
   reference?: string;
+  notes?: string;
 }
 
 export interface StockMovementFilters {

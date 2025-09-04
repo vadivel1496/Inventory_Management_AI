@@ -54,8 +54,10 @@ CREATE TABLE IF NOT EXISTS stock_movements (
     type VARCHAR(10) NOT NULL CHECK (type IN ('in', 'out')),
     reason TEXT,
     reference VARCHAR(255),
+    notes TEXT,
     user_id INTEGER REFERENCES users(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS audit_logs (

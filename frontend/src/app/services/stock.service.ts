@@ -51,6 +51,10 @@ export class StockService {
     return this.http.get<ApiResponse<StockMovementListResponse>>(`${environment.apiUrl}/stock/products/${productId}/movements`, { params });
   }
 
+  updateStockMovement(movementId: number, movement: CreateStockMovementRequest): Observable<ApiResponse<StockMovement>> {
+    return this.http.put<ApiResponse<StockMovement>>(`${environment.apiUrl}/stock/movements/${movementId}`, movement);
+  }
+
   deleteStockMovement(movementId: number): Observable<ApiResponse<any>> {
     return this.http.delete<ApiResponse<any>>(`${environment.apiUrl}/stock/movements/${movementId}`);
   }

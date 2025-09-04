@@ -50,9 +50,30 @@ export class StockFormComponent implements OnInit {
   }
 
   loadStockMovement(id: number): void {
-    // Load existing stock movement data for editing
-    // This would need to be implemented in the StockService
-    console.log('Loading stock movement for editing:', id);
+    this.loading = true;
+    this.stockService.getStockMovement(id).subscribe({
+      next: (response) => {
+        if (response.success) {
+          const movement = response.data;
+          this.stockForm.patchValue({
+            productId: movement.product.id,
+            type: movement.type,
+            quantity: movement.quantity,
+            reason: movement.reason,
+            reference: movement.reference || '',
+            notes: movement.notes || ''
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error loading stock movement:', error);
+        alert('Failed to load stock movement data. Please try again.');
+        this.router.navigate(['/stock']);
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
 
   loadProducts(): void {
@@ -114,11 +135,20 @@ export class StockFormComponent implements OnInit {
   }
 
   updateStockMovement(id: number, stockMovementData: any): void {
-    // This would need to be implemented in the StockService
-    console.log('Updating stock movement:', id, stockMovementData);
-    alert('Stock movement updated successfully!');
-    this.router.navigate(['/stock']);
-    this.loading = false;
+    this.stockService.updateStockMovement(id, { ...stockMovementData, notes: this.stockForm.get('notes')?.value || '' }).subscribe({
+      next: (response) => {
+        if (response.success) {
+          alert('Stock movement updated successfully!');
+          this.router.navigate(['/stock']);
+        }
+      },
+      error: (error) => {
+        this.handleError(error);
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
 
   handleError(error: any): void {
